@@ -1,4 +1,4 @@
-# Dispenser Backend (DPB) - Pillwatcher ![](https://travis-ci.com/PillWatcher/pillwatcher-dpb-service.svg?branch=master)
+# Dispenser Backend Patient Service (DPB) - Pillwatcher ![](https://travis-ci.com/PillWatcher/pillwatcher-dpb-patient-service.svg?branch=master)
 
 <img src="https://sonarcloud.io/api/project_badges/quality_gate?project=PI2-Grupo-3_pillwatcher-dpb-service" align="right"
      alt="Sonar Cloud Quality Gate Status" width="120" height="178">
