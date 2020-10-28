@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>br.com.pillwatcher</groupId>
-	<artifactId>dpb</artifactId>
+	<artifactId>dpb-patient-service</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>pillwatcher-dpb-patient-service</name>
 	<description>PillWatcher Dispenser Patient Service</description>
@@ -93,7 +93,7 @@
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<scope>compile</scope>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
