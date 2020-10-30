@@ -15,15 +15,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
 
+import static br.com.pillwatcher.dpb.constants.UrlConstants.BASE_URI;
+
 @Slf4j
 @RequiredArgsConstructor
 @RestController
 @Api(tags = {"Patient"})
+@RequestMapping(BASE_URI)
 public class PatientController implements PatientsApi {
 
     private final PatientMapper mapper;
@@ -84,7 +88,7 @@ public class PatientController implements PatientsApi {
         log.info("PatientController.deletePatient - Start - Input - [{}]", "");
         log.debug("PatientController.deletePatient - Start - Input - Order: {} ", "");
 
-        List<Patient> patientList = service.findPatients();
+        List<PatientDTOForResponse> patientList = service.findPatients();
 
         ResponseEntity<PatientDTOForGet> response = ResponseEntity.ok(
                 mapper.toPatientDtoForGet(patientList));

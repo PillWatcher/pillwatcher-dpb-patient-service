@@ -9,6 +9,7 @@ import br.com.pillwatcher.dpb.repositories.PatientRepository;
 import br.com.pillwatcher.dpb.services.PatientService;
 import io.swagger.model.ErrorCodeEnum;
 import io.swagger.model.PatientDTOForCreate;
+import io.swagger.model.PatientDTOForResponse;
 import io.swagger.model.PatientDTOForUpdate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -94,10 +96,18 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
-    public List<Patient> findPatients() {
+    public List<PatientDTOForResponse> findPatients() {
 
         log.info("PatientServiceImpl.findPatient - Start - Input {}", "");
-        return repository.findAll();
+        List<Patient> patients = repository.findAll();
+
+        List<PatientDTOForResponse> patientDTOForResponses = new ArrayList<>();
+
+        patients.forEach(patient -> {
+            patientDTOForResponses.add(mapper.toPatientForResponse(patient));
+        });
+
+        return patientDTOForResponses;
     }
 
     @Override
