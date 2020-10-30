@@ -182,7 +182,7 @@
 							<goal>generate</goal>
 						</goals>
 						<configuration>
-							<inputSpec>${project.basedir}/src/main/resources/pillwatcher-dpb-service.yaml</inputSpec>
+							<inputSpec>${project.basedir}/src/main/resources/pillwatcher-dpb-patient-service.yaml</inputSpec>
 							<language>spring</language>
 							<output>${project.build.directory}/generated-sources</output>
 							<configOptions>
