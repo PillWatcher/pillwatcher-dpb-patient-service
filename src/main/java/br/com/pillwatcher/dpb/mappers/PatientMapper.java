@@ -2,6 +2,7 @@ package br.com.pillwatcher.dpb.mappers;
 
 import br.com.pillwatcher.dpb.entities.Patient;
 import io.swagger.model.PatientDTOForCreate;
+import io.swagger.model.PatientDTOForGet;
 import io.swagger.model.PatientDTOForResponse;
 import io.swagger.model.PatientDTOForUpdate;
 import org.mapstruct.Mapper;
@@ -9,6 +10,8 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 import org.mapstruct.NullValueCheckStrategy;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface PatientMapper {
@@ -34,4 +37,11 @@ public interface PatientMapper {
             @Mapping(source = "user.imageUrl", target = "imageUrl")
     })
     PatientDTOForResponse toPatientForResponse(Patient patient);
+
+    @Mappings({
+            @Mapping(source = "user.name", target = "name"),
+            @Mapping(source = "user.document", target = "document"),
+            @Mapping(source = "user.imageUrl", target = "imageUrl")
+    })
+    PatientDTOForGet toPatientDtoForGet(List<Patient> patients);
 }

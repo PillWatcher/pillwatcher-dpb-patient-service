@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -89,6 +90,14 @@ public class PatientServiceImpl implements PatientService {
         }
 
         return patient.get();
+    }
+
+    @Override
+    @Transactional
+    public List<Patient> findPatients() {
+
+        log.info("PatientServiceImpl.findPatient - Start - Input {}", "");
+        return repository.findAll();
     }
 
     @Override
