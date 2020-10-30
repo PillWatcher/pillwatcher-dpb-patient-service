@@ -339,7 +339,7 @@ definitions:
         description: 'Patient born date'
         example: '2020-01-21'
         type: string
-        format: 'date'
+        format: 'date-time'
       observation:
         description: 'Patient Observation'
         example: 'O paciente possui pressão alta;'
@@ -372,7 +372,7 @@ definitions:
         description: 'Patient born date'
         example: '2020-01-21'
         type: string
-        format: 'date'
+        format: 'date-time'
       observation:
         description: 'Patient Observation'
         example: 'O paciente possui pressão alta;'
@@ -409,7 +409,7 @@ definitions:
         description: 'Patient born date'
         example: '2020-01-21'
         type: string
-        format: 'date'
+        format: 'date-time'
       observation:
         description: 'Patient Observation'
         example: 'O paciente possui pressão alta;'
@@ -434,6 +434,7 @@ definitions:
     enum:
       - ACCESS_DENIED
       - PATIENT_ALREADY_EXISTS
+      - PATIENT_NOT_FOUND
       - INVALID_PARAMETER
       - TOO_MANY_REQUESTS
       - UNEXPECTED_ERROR

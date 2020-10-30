@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -32,7 +33,7 @@ public class Patient extends Auditable {
     private User user;
 
     @Column(name = "BORN_DATE")
-    private LocalDate bornDate;
+    private LocalDateTime bornDate;
 
     @Column(name = "OBSERVATION")
     private String observation;
