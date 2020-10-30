@@ -76,6 +76,11 @@ paths:
       operationId: "getAllPatients"
       produces:
         - "application/json"
+      parameters:
+        - name: nurseId
+          description: 'Nurse Id'
+          in: query
+          type: string
       responses:
         '200':
           description: Ok
@@ -123,7 +128,7 @@ paths:
       description: "Get a Patient in Pillwatcher"
       tags:
         - Patient
-      operationId: "getPatient"
+      operationId:  "getPatient"
       produces:
         - "application/json"
       parameters:
@@ -131,6 +136,10 @@ paths:
           description: 'Patient Official Document (CPF)'
           in: path
           required: true
+          type: string
+        - name: nurseId
+          description: 'Nurse Id'
+          in: query
           type: string
       responses:
         '200':
@@ -201,6 +210,10 @@ paths:
           in: path
           required: true
           type: string
+        - name: nurseId
+          description: 'Nurse Id'
+          in: query
+          type: string
       responses:
         '200':
           description: 'Patient Object'
@@ -264,6 +277,10 @@ paths:
           description: 'Patient Official Document (CPF)'
           in: path
           required: true
+          type: string
+        - name: nurseId
+          description: 'Nurse Id'
+          in: query
           type: string
       responses:
         '200':

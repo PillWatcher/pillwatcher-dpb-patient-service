@@ -13,10 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -50,8 +47,9 @@ public class PatientController implements PatientsApi {
     }
 
     @Override
-    public ResponseEntity<PatientDTOForResponse> updatePatient(@Valid @RequestBody final PatientDTOForUpdate dtoForUpdate,
-                                                               @PathVariable("cpf") final String cpf) {
+    public ResponseEntity<PatientDTOForResponse> updatePatient(@Valid final @RequestBody PatientDTOForUpdate dtoForUpdate,
+                                                               final @PathVariable("cpf") String cpf,
+                                                               final @RequestParam(value = "nurseId") String nurseId) {
 
         log.info("PatientController.updatePatient - Start - Input - [{}, {}]", dtoForUpdate, cpf);
         log.debug("PatientController.updatePatient - Start - Input - Order: {} - {}", dtoForUpdate, cpf);
@@ -67,7 +65,8 @@ public class PatientController implements PatientsApi {
     }
 
     @Override
-    public ResponseEntity<PatientDTOForResponse> getPatient(final String cpf) {
+    public ResponseEntity<PatientDTOForResponse> getPatient(final @PathVariable("cpf") String cpf,
+                                                            final @RequestParam(value = "nurseId") String nurseId) {
 
         log.info("PatientController.getPatient - Start - Input - [{}]", cpf);
         log.debug("PatientController.getPatient - Start - Input - Order: {} ", cpf);
@@ -83,7 +82,7 @@ public class PatientController implements PatientsApi {
     }
 
     @Override
-    public ResponseEntity<PatientDTOForGet> getAllPatients() {
+    public ResponseEntity<PatientDTOForGet> getAllPatients(@RequestParam("nurseId") String nurseId) {
 
         log.info("PatientController.deletePatient - Start - Input - [{}]", "");
         log.debug("PatientController.deletePatient - Start - Input - Order: {} ", "");
@@ -99,7 +98,8 @@ public class PatientController implements PatientsApi {
     }
 
     @Override
-    public ResponseEntity<Void> deletePatient(final String cpf) {
+    public ResponseEntity<Void> deletePatient(final @PathVariable("cpf") String cpf,
+                                              final @RequestParam(name = "nurseId") String nurseId) {
 
         log.info("PatientController.deletePatient - Start - Input - [{}]", cpf);
         log.debug("PatientController.deletePatient - Start - Input - Order: {} ", cpf);

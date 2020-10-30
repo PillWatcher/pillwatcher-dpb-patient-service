@@ -96,7 +96,7 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
-    public List<PatientDTOForResponse> findPatients() {
+    public List<PatientDTOForResponse> findPatients() { //TODO include as a Pageable type
 
         log.info("PatientServiceImpl.findPatient - Start - Input {}", "");
         List<Patient> patients = repository.findAll();
