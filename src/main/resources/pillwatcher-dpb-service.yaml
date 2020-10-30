@@ -434,6 +434,7 @@ definitions:
     enum:
       - ACCESS_DENIED
       - PATIENT_ALREADY_EXISTS
+      - PATIENT_NOT_FOUND
       - INVALID_PARAMETER
       - TOO_MANY_REQUESTS
       - UNEXPECTED_ERROR

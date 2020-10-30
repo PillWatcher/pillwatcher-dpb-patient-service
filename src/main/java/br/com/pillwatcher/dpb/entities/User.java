@@ -11,7 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.Size;
 
-//import static br.com.pillwatcher.dpb.constants.ValidationConstraints.*;
+import static br.com.pillwatcher.dpb.constants.ValidationConstraints.*;
 
 @Slf4j
 @Data
@@ -35,7 +35,7 @@ public class User {
     @Column(name = "IMAGE_URL")
     private String imageUrl;
 
-//    @Size(min = NAME_MIN_SIZE, max = NAME_MAX_SIZE, message = NAME_SIZE_MUST_BE_BETWEEN) TODO create Validation
+    @Size(min = NAME_MIN_SIZE, max = NAME_MAX_SIZE, message = NAME_SIZE_MUST_BE_BETWEEN)
     @Column(name = "NAME", nullable = false)
     private String name;
 
