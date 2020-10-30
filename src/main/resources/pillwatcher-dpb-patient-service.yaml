@@ -76,6 +76,11 @@ paths:
       operationId: "getAllPatients"
       produces:
         - "application/json"
+      parameters:
+        - name: nurseId
+          description: 'Nurse Id'
+          in: query
+          type: string
       responses:
         '200':
           description: Ok
