@@ -1,46 +1,458 @@
-swagger: '2.0'
+swagger: "2.0"
 info:
-  version: 1.0.0
-  title: Pillwatcher DPB Service
-  description: Pillwatcher Dispenser Backend Service
-host: api.k8s
-basePath: /pillwatcher-dpb/v1
+  description: "API for managing patients functionalities"
+  version: "1.0.0"
+  title: "PillWatcher Patient Service"
+  license:
+    name: "MIT 2.0"
+    url: "https://opensource.org/licenses/MIT"
+basePath: "/v1/pillwatcher"
 schemes:
-  - http
+  - "http"
 tags:
-  - name: Patients
+  - name: Patient
 paths:
   '/patients':
-    get:
-      description: Get all Patients
-      summary: Get all Patients
-      operationId: GetPatients
+    post:
+      summary: "Add a new Patient to Pillwatcher"
+      description: "Add a new Patient to Pillwatcher"
       tags:
-        - Patients
+        - Patient
+      operationId: "createPatient"
       produces:
-        - application/json
+        - "application/json"
+      parameters:
+        - name: patientDtoForCreate
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PatientDTOForCreate'
+      responses:
+        '201':
+          description: 'Patient created'
+          schema:
+            $ref: '#/definitions/PatientDTOForResponse'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: VALIDATION_ERROR
+              message: "Validation failed"
+              details: ["Bad Request"]
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: UNAUTHORIZED
+              message: "Unauthorized"
+              details: ["Unauthorized"]
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: FORBIDDEN
+              message: "Forbidden"
+              details: ["Forbidden"]
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: UNEXPECTED_ERROR
+              message: "Internal server error"
+              details: ["Internal server error"]
+    get:
+      summary: "Get all Patients in Pillwatcher"
+      description: "Get all Patients in Pillwatcher"
+      tags:
+        - Patient
+      operationId: "getAllPatients"
+      produces:
+        - "application/json"
       responses:
         '200':
-          description: 'Campaign info'
+          description: Ok
           schema:
-            $ref: '#/definitions/PatientDTO'
+            $ref: '#/definitions/PatientDTOForGet'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: VALIDATION_ERROR
+              message: "Validation failed"
+              details: ["Bad Request"]
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: UNAUTHORIZED
+              message: "Unauthorized"
+              details: ["Unauthorized"]
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: FORBIDDEN
+              message: "Forbidden"
+              details: ["Forbidden"]
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: UNEXPECTED_ERROR
+              message: "Internal server error"
+              details: ["Internal server error"]
+  '/patients/{cpf}':
+    get:
+      summary: "Get a Patient in Pillwatcher"
+      description: "Get a Patient in Pillwatcher"
+      tags:
+        - Patient
+      operationId: "getPatient"
+      produces:
+        - "application/json"
+      parameters:
+        - name: cpf
+          description: 'Patient Official Document (CPF)'
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/PatientDTOForResponse'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: VALIDATION_ERROR
+              message: "Validation failed"
+              details: ["Bad Request"]
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: UNAUTHORIZED
+              message: "Unauthorized"
+              details: ["Unauthorized"]
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: FORBIDDEN
+              message: "Forbidden"
+              details: ["Forbidden"]
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: NOT_FOUND
+              message: "Entity not found"
+              details: ["Patient with cpf *** not found"]
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: UNEXPECTED_ERROR
+              message: "Internal server error"
+              details: ["Internal server error"]
+    put:
+      summary: 'Update a Patient info on Pillwatcher'
+      description: 'Update a Patient info on Pillwatcher'
+      tags:
+        - Patient
+      operationId: "updatePatient"
+      produces:
+        - "application/json"
+      parameters:
+        - name: patientDtoForUpdate
+          in: body
+          required: true
+          schema:
+            $ref: '#/definitions/PatientDTOForUpdate'
+        - name: cpf
+          description: 'Patient Official Document (CPF)'
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: 'Patient Object'
+          schema:
+            $ref: '#/definitions/PatientDTOForResponse'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: VALIDATION_ERROR
+              message: "Validation failed"
+              details: ["Bad Request"]
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: UNAUTHORIZED
+              message: "Unauthorized"
+              details: ["Unauthorized"]
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: FORBIDDEN
+              message: "Forbidden"
+              details: ["Forbidden"]
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: NOT_FOUND
+              message: "Entity not found"
+              details: ["Patient with CPF *** not found"]
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: UNEXPECTED_ERROR
+              message: "Internal server error"
+              details: ["Internal server error"]
+    delete:
+      summary: 'Delete a Patient from given CPF'
+      description: 'Patient from given CPF'
+      tags:
+        - Patient
+      operationId: "deletePatient"
+      produces:
+        - "application/json"
+      parameters:
+        - name: cpf
+          description: 'Patient Official Document (CPF)'
+          in: path
+          required: true
+          type: string
+      responses:
+        '200':
+          description: Ok
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: VALIDATION_ERROR
+              message: "Validation failed"
+              details: ["Constraint violation"]
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: UNAUTHORIZED
+              message: "Unauthorized"
+              details: ["Unauthorized"]
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: FORBIDDEN
+              message: "Forbidden"
+              details: ["Forbidden"]
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: NOT_FOUND
+              message: "Entity not found"
+              details: ["Patient with CPF *** not found"]
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: UNEXPECTED_ERROR
+              message: "Internal server error"
+              details: ["Internal server error"]
 definitions:
-  PatientDTO:
-    type: 'object'
-    description: 'Structure used to return of campaign information'
-    required:
-      - patientName
-      - lastname
+  WrapperListResponse:
     properties:
-      patientName:
-        description: 'Patient Name'
-        example: 'Jose'
+      data:
+        description: 'List Patient response'
+        type: array
+        items:
+          $ref: '#/definitions/PatientDTOForResponse'
+  PatientDTOForUpdate:
+    type: 'object'
+    description: 'Structure used to create a Patient on Pillwatcher'
+    properties:
+      name:
+        description: 'Patient name'
+        example: 'Logan Warden'
         type: string
-        minLength: 5
-        maxLength: 50
-      lastName:
-        description: 'Patient Last Name'
-        example: 'Maria'
+        minLength: 3
+        maxLength: 120
+      imageUrl:
+        description: 'Image Url from S3'
+        example: 'https://s3.com/image_from_user.jpg'
         type: string
-        minLength: 5
-        maxLength: 50
+      bornDate:
+        description: 'Patient born date'
+        example: '2020-01-21'
+        type: string
+        format: 'date'
+      observation:
+        description: 'Patient Observation'
+        example: 'O paciente possui pressão alta;'
+        type: string
+      idNurse:
+        description: 'Nurse id'
+        example: 145
+        type: number
+  PatientDTOForCreate:
+    type: 'object'
+    description: 'Structure used to create a Patient on Pillwatcher'
+    properties:
+      name:
+        description: 'Patient name'
+        example: 'Logan Warden'
+        type: string
+        minLength: 3
+        maxLength: 120
+      document:
+        description: 'Patient Official Document (CPF)'
+        example: '71005638012'
+        type: string
+        minLength: 11
+        maxLength: 11
+      imageUrl:
+        description: 'Image Url from S3'
+        example: 'https://s3.com/image_from_user.jpg'
+        type: string
+      bornDate:
+        description: 'Patient born date'
+        example: '2020-01-21'
+        type: string
+        format: 'date'
+      observation:
+        description: 'Patient Observation'
+        example: 'O paciente possui pressão alta;'
+        type: string
+      idNurse:
+        description: 'Nurse id'
+        example: 145
+        type: number
+  PatientDTOForResponse:
+    type: 'object'
+    description: 'Structure used to create a Patient on Pillwatcher'
+    properties:
+      id:
+        description: 'Patient id'
+        example: 12345
+        type: number
+      name:
+        description: 'Patient name'
+        example: 'Logan Warden'
+        type: string
+        minLength: 3
+        maxLength: 120
+      document:
+        description: 'Patient Official Document (CPF)'
+        example: '71005638012'
+        type: string
+        minLength: 11
+        maxLength: 11
+      imageUrl:
+        description: 'Image Url from S3'
+        example: 'https://s3.com/image_from_user.jpg'
+        type: string
+      bornDate:
+        description: 'Patient born date'
+        example: '2020-01-21'
+        type: string
+        format: 'date'
+      observation:
+        description: 'Patient Observation'
+        example: 'O paciente possui pressão alta;'
+        type: string
+      inclusionDate:
+        description: 'Patient inclusion date'
+        example: '2020-01-21T23:59:39Z'
+        type: string
+        format: 'date-time'
+      updateDate:
+        description: 'Patient update date'
+        example: '2020-01-21T23:59:39Z'
+        type: string
+        format: 'date-time'
+  PatientDTOForGet:
+    type: array
+    description: 'Structure used to store patients'
+    items:
+      $ref: '#/definitions/PatientDTOForResponse'
+  ErrorCodeEnum:
+    type: string
+    enum:
+      - ACCESS_DENIED
+      - PATIENT_ALREADY_EXISTS
+      - INVALID_PARAMETER
+      - TOO_MANY_REQUESTS
+      - UNEXPECTED_ERROR
+      - VALIDATION_ERROR
+      - UNAUTHORIZED
+      - NOT_FOUND
+  Fault:
+    title: Fault
+    type: object
+    properties:
+      code:
+        $ref: '#/definitions/ErrorCodeEnum'
+      message:
+        description: Error description
+        example: Internal Server Error
+        type: string
+      details:
+        description: Error detailed description
+        type: array
+        items:
+          type: string
+        example: [Internal Server Error - An error has ocurred calling partner API.]
