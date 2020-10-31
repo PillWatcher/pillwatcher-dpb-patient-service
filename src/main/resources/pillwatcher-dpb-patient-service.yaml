@@ -450,6 +450,7 @@ definitions:
     type: string
     enum:
       - ACCESS_DENIED
+      - NURSE_NOT_FOUND
       - PATIENT_ALREADY_EXISTS
       - PATIENT_NOT_FOUND
       - INVALID_PARAMETER

@@ -11,11 +11,11 @@ public interface PatientService {
 
     Patient create(PatientDTOForCreate patientDto);
 
-    Patient update(PatientDTOForUpdate patientDtoForUpdate, String document);
+    Patient update(PatientDTOForUpdate patientDtoForUpdate, String document, String nurseId);
 
-    Patient findPatient(String document);
+    Patient findPatient(String document, String nurseId);
 
-    List<PatientDTOForResponse> findPatients();
+    List<PatientDTOForResponse> findPatients(String nurseId);
 
-    void deletePatient(String document);
+    void deletePatient(String document, String nurseId);
 }

@@ -54,7 +54,7 @@ public class PatientController implements PatientsApi {
         log.info("PatientController.updatePatient - Start - Input - [{}, {}]", dtoForUpdate, cpf);
         log.debug("PatientController.updatePatient - Start - Input - Order: {} - {}", dtoForUpdate, cpf);
 
-        Patient patient = service.update(dtoForUpdate, cpf);
+        Patient patient = service.update(dtoForUpdate, cpf, nurseId);
 
         ResponseEntity<PatientDTOForResponse> response = ResponseEntity.ok(
                 mapper.toPatientForResponse(patient));
@@ -71,7 +71,7 @@ public class PatientController implements PatientsApi {
         log.info("PatientController.getPatient - Start - Input - [{}]", cpf);
         log.debug("PatientController.getPatient - Start - Input - Order: {} ", cpf);
 
-        Patient patient = service.findPatient(cpf);
+        Patient patient = service.findPatient(cpf, nurseId);
 
         ResponseEntity<PatientDTOForResponse> response = ResponseEntity.ok(
                 mapper.toPatientForResponse(patient));
@@ -87,7 +87,7 @@ public class PatientController implements PatientsApi {
         log.info("PatientController.deletePatient - Start - Input - [{}]", "");
         log.debug("PatientController.deletePatient - Start - Input - Order: {} ", "");
 
-        List<PatientDTOForResponse> patientList = service.findPatients();
+        List<PatientDTOForResponse> patientList = service.findPatients(nurseId);
 
         ResponseEntity<PatientDTOForGet> response = ResponseEntity.ok(
                 mapper.toPatientDtoForGet(patientList));
@@ -104,7 +104,7 @@ public class PatientController implements PatientsApi {
         log.info("PatientController.deletePatient - Start - Input - [{}]", cpf);
         log.debug("PatientController.deletePatient - Start - Input - Order: {} ", cpf);
 
-        service.deletePatient(cpf);
+        service.deletePatient(cpf, nurseId);
 
         ResponseEntity<Void> response = ResponseEntity
                 .ok()
