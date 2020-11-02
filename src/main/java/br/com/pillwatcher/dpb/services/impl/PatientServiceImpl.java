@@ -108,6 +108,13 @@ public class PatientServiceImpl implements PatientService {
         return repository.save(patient);
     }
 
+    /**
+     * Find Patients based on CPF and Nurse Id.
+     * A Nurse can only see Patients that are linked to they
+     * @param document
+     * @param nurseId
+     * @return PatientDTOForGet
+     */
     @Override
     @Transactional
     public Patient findPatient(final String document, final String nurseId) {

@@ -82,7 +82,7 @@ public class PatientController implements PatientsApi {
     }
 
     @Override
-    public ResponseEntity<PatientDTOForGet> getAllPatients(@RequestParam("nurseId") String nurseId) {
+    public ResponseEntity<PatientDTOForGet> getAllPatients(final @RequestParam("nurseId") String nurseId) {
 
         log.info("PatientController.deletePatient - Start - Input - [{}]", "");
         log.debug("PatientController.deletePatient - Start - Input - Order: {} ", "");

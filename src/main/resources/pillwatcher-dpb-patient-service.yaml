@@ -128,8 +128,8 @@ paths:
               details: ["Internal server error"]
   '/patients/{cpf}':
     get:
-      summary: "Get a Patient in Pillwatcher"
-      description: "Get a Patient in Pillwatcher"
+      summary: "Get Patient's Info in Pillwatcher"
+      description: "Get Patient's Info in Pillwatcher"
       tags:
         - Patient
       operationId:  "getPatient"
@@ -1604,6 +1604,8 @@ definitions:
         example: '2020-01-21T23:59:39Z'
         type: string
         format: 'date-time'
+      prescription:
+        $ref: '#/definitions/PrescriptionDTOForGet'
   PatientDTOForGet:
     type: array
     description: 'Structure used to store patients'
@@ -1635,7 +1637,7 @@ definitions:
         format: int64
       imageUrl:
         description: 'Image of prescription'
-        example: 'https://s3-amazon.com.br/4545645546454546545'
+        example: 'https://s3-amazon.com.br/random-url-here-1239105-as1091.jpg'
         type: string
         minLength: 15
         maxLength: 255
@@ -1654,6 +1656,92 @@ definitions:
         example: '2020-01-21T23:23:23'
         type: string
         format: 'date-time'
+  PrescriptionDTO:
+    type: 'object'
+    description: "Structure used to get Patient's Prescription Info"
+    properties:
+      prescriptionId:
+        description: 'Id Prescription'
+        example: 12345
+        type: number
+        format: int64
+      imageUrl:
+        description: 'Image of Prescritpion'
+        example: 'https://s3-amazon.com.br/random-url-here-1239105-as1091.jpg'
+        type: string
+        minLength: 15
+        maxLength: 255
+      inclusionDate:
+        description: 'Inclusion date of prescription'
+        example: '2020-01-21T23:23:23Z'
+        type: string
+        format: 'date-time'
+      updateDate:
+        description: 'Update date of prescription'
+        example: '2020-01-21T23:23:23'
+        type: string
+        format: 'date-time'
+      validityDate:
+        description: 'Validity Date of Prescription'
+        example: '2020-01-21T23:23:23'
+        type: string
+        format: 'date-time'
+      medication:
+        $ref: '#/definitions/MedicationDTOForGet'
+  PrescriptionDTOForGet:
+    type: 'array'
+    description: "Structure used to get Patient's Prescription Info"
+    items:
+      $ref: '#/definitions/PrescriptionDTO'
+  MedicationDTOForGet:
+    type: 'array'
+    items:
+      $ref: '#/definitions/MedicationDTO'
+  MedicationDTO:
+    type: 'object'
+    description: 'Structure used to Stroe Medications Info'
+    properties:
+      medicationId:
+        description: 'Medication Id'
+        example: 12345
+        type: number
+        format: int64
+      name:
+        description: 'Remedy Name'
+        example: 'Parecetamol'
+        type: string
+      dosage:
+        description: 'Remedy Dosage'
+        type: number
+        format: int32
+        example: 25
+      dosageType:
+        description: 'Remedy Dosage Type'
+        type: string
+        example: 'mL'
+      location:
+        description: 'Remedy Location on Pillwatcher'
+        type: number
+        format: int32
+        example: 17
+      batch:
+        description: 'Remedy Batch'
+        type: string
+        example: '1230WS0-XA102'
+      intervalTime:
+        description: 'Remedy Application Inteval Time'
+        type: number
+        format: int32
+        example: 30
+      intervalTimeType:
+        description: 'Remedy Application Inteval Time Type'
+        type: string
+        example: 'min'
+      availableQuantity:
+        description: 'Remedy Quantity Available'
+        type: number
+        format: int32
+        example: 30
   PrescriptionMedicationDTOForCreate:
     type: 'object'
     description: 'Structure used to create a medication of prescription on Pillwatcher'
