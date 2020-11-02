@@ -27,9 +27,8 @@ public class Prescription extends Auditable {
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     private Patient patient;
 
-    @JoinColumn(name = "ID_USER")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private User user;
+    @Column(name = "IMAGE_URL")
+    private String imageUrl;
 
     @Column(name = "VALIDITY_DATE")
     private LocalDateTime validityDate;

@@ -1,5 +1,6 @@
 package br.com.pillwatcher.dpb.entities;
 
+import br.com.pillwatcher.dpb.utils.enums.DosageTypeEnum;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
@@ -28,13 +29,8 @@ public class Medicine extends Auditable {
     @Column(name = "DOSAGE")
     private Integer dosage;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "DOSAGE_TYPE")
-    //    private DosageTypeEnum dosageType; //TODO add DosageTypeEnum
-    private String dosageType; //TODO add DosageTypeEnum
-
-    //TODO should we put patient Id here?
-    /*
-        This medicine is from Patient <X>
-     */
+    private DosageTypeEnum dosageType; //TODO add DosageTypeEnum
 
 }

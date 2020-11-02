@@ -24,12 +24,16 @@ public class Medication extends Auditable {
     private Long id;
 
     @JoinColumn(name = "ID_PRESCRIPTION")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Prescription prescription;
 
     @JoinColumn(name = "ID_MEDICINE")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Medicine medicine;
+
+    @JoinColumn(name = "ID_CUP")
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Cup cup;
 
     @Column(name = "QUANTITY")
     private Integer quantity;
