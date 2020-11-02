@@ -43,7 +43,7 @@ public class PatientServiceImpl implements PatientService {
 
         log.info("PatientServiceImpl.create - Start - Input {}", patientDto);
 
-        Optional<Nurse> nurseFound = nRepository.findById(patientDto.getIdNurse().longValue());
+        Optional<Nurse> nurseFound = nRepository.findById(patientDto.getNurseId().longValue());
         Optional<Patient> patientFound = repository.findPatientByUserDocument(patientDto.getDocument());
 
         if (patientFound.isPresent()) {
@@ -53,11 +53,11 @@ public class PatientServiceImpl implements PatientService {
         }
 
         if (!nurseFound.isPresent()) {
-            log.warn(ValidationConstraints.NURSE_NOT_FOUND, patientDto.getIdNurse());
+            log.warn(ValidationConstraints.NURSE_NOT_FOUND, patientDto.getNurseId());
             throw new PatientException(ErrorCodeEnum.NURSE_NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(
                             ValidationConstraints.NURSE_NOT_FOUND, "{}",
-                            String.valueOf(patientDto.getIdNurse())));
+                            String.valueOf(patientDto.getNurseId())));
         }
 
         NursePatient nursePatient = new NursePatient();
