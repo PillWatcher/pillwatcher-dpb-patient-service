@@ -1737,6 +1737,10 @@ definitions:
         description: 'Remedy Application Inteval Time Type'
         type: string
         example: 'min'
+      cupTag:
+        description: 'Unique tag of cup for medication'
+        example: '456055486512SDA'
+        type: string
       availableQuantity:
         description: 'Remedy Quantity Available'
         type: number
@@ -1784,6 +1788,10 @@ definitions:
         example: 12
         type: number
         format: int32
+      cupTag:
+        description: 'Unique tag of cup for medication'
+        example: '456055486512SDA'
+        type: string
   PrescriptionMedicationDTOForResponse:
     type: 'object'
     description: 'Structure used to found a medication of prescription on Pillwatcher'
@@ -1828,6 +1836,10 @@ definitions:
         example: 12
         type: number
         format: int32
+      cupTag:
+        description: 'Unique tag of cup for medication'
+        example: '456055486512SDA'
+        type: string
       availableQuantity:
         description: 'Available quantity of medication in PillWatcher'
         example: 25
@@ -1891,7 +1903,7 @@ definitions:
         example: 25
         type: number
         format: int64
-      qauntity:
+      quantity:
         description: 'Medication Quantity'
         example: 3
         type: number
@@ -1915,7 +1927,7 @@ definitions:
         example: 25
         type: number
         format: int64
-      qauntity:
+      quantity:
         description: 'Medication Quantity'
         example: 3
         type: number
