@@ -4,6 +4,7 @@ import br.com.pillwatcher.dpb.entities.Prescription;
 import io.swagger.model.PatientPrescriptionDTOForCreate;
 import io.swagger.model.PatientPrescriptionDTOForGetAll;
 import io.swagger.model.PatientPrescriptionDTOForResponse;
+import org.mapstruct.IterableMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
@@ -19,8 +20,12 @@ public interface PrescriptionMapper {
     Prescription dtoToEntity(final PatientPrescriptionDTOForCreate prescriptionMedicationDTOForCreate,
                              final Long patientId);
 
+    @Mappings({
+            @Mapping(target = "patientCpf", source = "prescription.patient.user.document")
+    })
     PatientPrescriptionDTOForResponse entityToDto(final Prescription prescription);
 
+    @IterableMapping(qualifiedByName = "entityToDto")
     PatientPrescriptionDTOForGetAll entityToDtos(final List<Prescription> prescription);
 
 }

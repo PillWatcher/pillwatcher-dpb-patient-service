@@ -1597,6 +1597,12 @@ definitions:
         type: string
         minLength: 15
         maxLength: 255
+      patientCpf:
+        description: 'Patient CPF'
+        example: '05389654102'
+        type: string
+        minLength: 11
+        maxLength: 11
       validityDate:
         description: 'Validity date of prescription'
         example: '2020-01-21'
@@ -1755,6 +1761,11 @@ definitions:
       id:
         description: 'Id Medication'
         example: 2
+        type: number
+        format: int64
+      prescriptionId:
+        description: 'Id prescription'
+        example: 89
         type: number
         format: int64
       medicine:
