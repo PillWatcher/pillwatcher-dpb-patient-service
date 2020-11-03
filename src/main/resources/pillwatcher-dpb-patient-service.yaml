@@ -1904,6 +1904,11 @@ definitions:
         example: '2020-01-21T23:23:23Z'
         type: string
         format: 'date-time'
+  DosageTypeEnum:
+    type: string
+    enum:
+      - MG
+      - ML
   ErrorCodeEnum:
     type: string
     enum:

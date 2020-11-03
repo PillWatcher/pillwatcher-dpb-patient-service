@@ -14,7 +14,7 @@ import io.swagger.model.ErrorCodeEnum;
 import io.swagger.model.PatientPrescriptionDTOForCreate;
 import io.swagger.model.PatientPrescriptionDTOForGetAll;
 import io.swagger.model.PatientPrescriptionDTOForResponse;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
@@ -24,7 +24,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Slf4j
-@AllArgsConstructor
+@RequiredArgsConstructor
 @Service
 public class PrescriptionServiceImpl implements PrescriptionService {
 
@@ -35,19 +35,26 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     private final PrescriptionMapper prescriptionMapper;
 
     @Override
-    public PatientPrescriptionDTOForResponse createPatientPrescription(final PatientPrescriptionDTOForCreate body, final String cpf, final Long nurseId) {
+    public PatientPrescriptionDTOForResponse createPatientPrescription(final PatientPrescriptionDTOForCreate body,
+                                                                       final String cpf,
+                                                                       final Long nurseId) {
 
         log.info("PrescriptionServiceImpl.create - Start - Input {}", body);
 
-        final Optional<NursePatient> nursePatient = patientService.getNursePatient(cpf, nurseId);
+        final Optional<NursePatient> nursePatientFound = patientService.getNursePatient(cpf, nurseId);
 
-        if (!nursePatient.isPresent()) {
+        if (!nursePatientFound.isPresent()) {
             log.warn(ValidationConstraints.PATIENT_NOT_FOUND, nurseId);
             throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", nurseId.toString()));
         }
 
-        Prescription save = prescriptionRepository.save(prescriptionMapper.dtoToEntity(body, nursePatient.get().getPatient().getId()));
+        NursePatient nursePatient = nursePatientFound.get();
+
+        Prescription save = prescriptionRepository.save(prescriptionMapper.dtoToEntity(body, nursePatient
+                .getPatient()
+                .getId()));
+
         return prescriptionMapper.entityToDto(save);
     }
 
@@ -81,7 +88,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
                     StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", cpf));
         }
 
-        List<Prescription> allByPatientId = prescriptionRepository.findAllByPatientId(patientByUserDocument.get().getId());
+        Patient patient = patientByUserDocument.get();
+        List<Prescription> allByPatientId = prescriptionRepository.findAllByPatientId(patient.getId());
 
         return prescriptionMapper.entityToDtos(allByPatientId);
     }
@@ -103,7 +111,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
     }
 
     @Override
-    public PatientPrescriptionDTOForResponse updatePatientPrescription(final PatientPrescriptionDTOForCreate patientPrescriptionDTOForUpdate, final Long prescriptionId) {
+    public PatientPrescriptionDTOForResponse updatePatientPrescription(
+            final PatientPrescriptionDTOForCreate patientPrescriptionDTOForUpdate, final Long prescriptionId) {
 
         log.info("PrescriptionServiceImpl.updatePatientPrescription - Start - Input {}", patientPrescriptionDTOForUpdate);
 
