@@ -15,7 +15,6 @@ public final class ValidationConstraints {
     public static final String PATIENT_NOT_FOUND = "Patient with CPF {} not found";
     public static final String PATIENT_ALREADY_EXISTS = "Patient with CPF {} already exists";
 
-    public static final String MEDICATION_ALREADY_EXISTS = "Medication with ID {} already exists";
     public static final String MISSING_PARAMETERS = "Method {} is missing parameters";
 
     public static final String PRESCRIPTION_NOT_FOUND = "Prescription with ID {} not found";
@@ -23,6 +22,8 @@ public final class ValidationConstraints {
     public static final String MEDICINE_NOT_FOUND = "Medicine with ID {} not found";
 
     public static final String CUP_NOT_FOUND = "Cup with tag {} not found";
+
+    public static final String MEDICATION_NOT_FOUND = "Medication with ID {} not found";
 
     public static final int NAME_MIN_SIZE = 3;
     public static final int NAME_MAX_SIZE = 120;

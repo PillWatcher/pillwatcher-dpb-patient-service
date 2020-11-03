@@ -20,6 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -57,5 +58,53 @@ public class MedicationServiceImpl implements MedicationService {
         Medication medication = mapper.dtoToEntity(body, medicine.getId(), cupByTag.getId());
 
         return repository.save(medication);
+    }
+
+    @Override
+    public Medication getMedication(final Long medicationId) {
+
+        log.info("MedicationServiceImpl.getMedication - Start - Input {}", medicationId);
+
+        Optional<Medication> optionalMedication = repository.findById(medicationId);
+
+        if (!optionalMedication.isPresent()) {
+            log.warn(ValidationConstraints.MEDICATION_NOT_FOUND, medicationId);
+            throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
+                    StringUtils.replace(ValidationConstraints.MEDICATION_NOT_FOUND, "{}", medicationId.toString()));
+        }
+
+        return optionalMedication.get();
+    }
+
+    @Override
+    public void deleteMedication(final Long medicationId) {
+
+        log.info("MedicationServiceImpl.deleteMedication - Start - Input {}", medicationId);
+
+        Optional<Medication> optionalMedication = repository.findById(medicationId);
+
+        if (!optionalMedication.isPresent()) {
+            log.warn(ValidationConstraints.MEDICATION_NOT_FOUND, medicationId);
+            throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
+                    StringUtils.replace(ValidationConstraints.MEDICATION_NOT_FOUND, "{}", medicationId.toString()));
+        }
+
+        repository.deleteById(medicationId);
+    }
+
+    @Override
+    public List<Medication> getAllMedication(final Long prescriptionId) {
+
+        log.info("MedicationServiceImpl.getAllMedication - Start - Input {}", prescriptionId);
+
+        Optional<Prescription> optionalPrescription = prescriptionRepository.findById(prescriptionId);
+
+        if (!optionalPrescription.isPresent()) {
+            log.warn(ValidationConstraints.PRESCRIPTION_NOT_FOUND, prescriptionId);
+            throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
+                    StringUtils.replace(ValidationConstraints.PRESCRIPTION_NOT_FOUND, "{}", prescriptionId.toString()));
+        }
+
+        return null;
     }
 }
