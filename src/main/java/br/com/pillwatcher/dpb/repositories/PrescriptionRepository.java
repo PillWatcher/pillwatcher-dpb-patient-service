@@ -10,8 +10,8 @@ import java.util.List;
 public interface PrescriptionRepository extends JpaRepository<Prescription, Long> {
 
     @Query("select prescription from Prescription prescription " +
-            "inner join Patient patient " +
-            "on patient.id = :patientId")
+            "inner join Patient patient on patient.id = prescription.patient.id " +
+            "where patient.id = :patientId")
     List<Prescription> findAllByPatientId(@Param("patientId") final Long patientId);
 
 }

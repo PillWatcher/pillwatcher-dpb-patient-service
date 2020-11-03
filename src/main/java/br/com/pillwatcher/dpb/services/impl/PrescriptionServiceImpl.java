@@ -16,10 +16,10 @@ import io.swagger.model.PatientPrescriptionDTOForGetAll;
 import io.swagger.model.PatientPrescriptionDTOForResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 
 @Slf4j
@@ -54,15 +54,15 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         log.info("PrescriptionServiceImpl.deletePatientPrescription - Start - Input {}", prescriptionId);
 
-        Prescription one = prescriptionRepository.getOne(prescriptionId);
+        Optional<Prescription> optionalPrescription = prescriptionRepository.findById(prescriptionId);
 
-        if (Objects.isNull(one)) {
+        if (!optionalPrescription.isPresent()) {
             log.warn(ValidationConstraints.PRESCRIPTION_NOT_FOUND, prescriptionId);
             throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(ValidationConstraints.PRESCRIPTION_NOT_FOUND, "{}", prescriptionId.toString()));
         }
 
-        prescriptionRepository.delete(one);
+        prescriptionRepository.delete(optionalPrescription.get());
 
     }
 
@@ -89,31 +89,40 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         log.info("PrescriptionServiceImpl.getPatientPrescription - Start - Input {}", prescriptionId);
 
-        final Prescription one = prescriptionRepository.getOne(prescriptionId);
+        Optional<Prescription> optionalPrescription = prescriptionRepository.findById(prescriptionId);
 
-        if (Objects.isNull(one)) {
+        if (!optionalPrescription.isPresent()) {
             log.warn(ValidationConstraints.PRESCRIPTION_NOT_FOUND, prescriptionId);
             throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(ValidationConstraints.PRESCRIPTION_NOT_FOUND, "{}", prescriptionId.toString()));
         }
 
-        return prescriptionMapper.entityToDto(one);
+        return prescriptionMapper.entityToDto(optionalPrescription.get());
     }
 
     @Override
-    public PatientPrescriptionDTOForResponse updatePatientPrescription(final PatientPrescriptionDTOForCreate body, final Long prescriptionId) {
+    public PatientPrescriptionDTOForResponse updatePatientPrescription(final PatientPrescriptionDTOForCreate patientPrescriptionDTOForUpdate, final Long prescriptionId) {
 
-        log.info("PrescriptionServiceImpl.updatePatientPrescription - Start - Input {}", body);
+        log.info("PrescriptionServiceImpl.updatePatientPrescription - Start - Input {}", patientPrescriptionDTOForUpdate);
 
-        final Prescription one = prescriptionRepository.getOne(prescriptionId);
+        Optional<Prescription> optionalPrescription = prescriptionRepository.findById(prescriptionId);
 
-        if (Objects.isNull(one)) {
+        if (!optionalPrescription.isPresent()) {
             log.warn(ValidationConstraints.PRESCRIPTION_NOT_FOUND, prescriptionId);
             throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(ValidationConstraints.PRESCRIPTION_NOT_FOUND, "{}", prescriptionId.toString()));
         }
 
-        return null;
+        Prescription prescription = optionalPrescription.get();
+
+        BeanUtils.copyProperties(
+                patientPrescriptionDTOForUpdate,
+                prescription,
+                "id", "inclusionDate");
+
+        Prescription save = prescriptionRepository.save(prescription);
+
+        return prescriptionMapper.entityToDto(save);
     }
 
 }

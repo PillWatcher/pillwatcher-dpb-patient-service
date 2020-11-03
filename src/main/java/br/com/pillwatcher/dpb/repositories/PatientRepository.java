@@ -13,8 +13,8 @@ public interface PatientRepository extends JpaRepository<Patient, Long> {
     Optional<Patient> findPatientByUserDocument(String document);
 
     @Query("select patient from Patient patient " +
-            "inner join NursePatient nursePatient on nursePatient.patient = patient " +
-            "inner join Nurse nurse on nursePatient.nurse = nurse " +
+            "inner join NursePatient nursePatient on nursePatient.patient.id = patient.id " +
+            "inner join Nurse nurse on nursePatient.nurse.id = nurse.id " +
             "where nurse.id = :nurseId")
     List<Patient> findAllByNurse(@Param("nurseId") final Long nurseId);
 
