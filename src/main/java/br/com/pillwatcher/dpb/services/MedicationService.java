@@ -5,6 +5,6 @@ import io.swagger.model.PrescriptionMedicationDTOForCreate;
 
 public interface MedicationService {
 
-    Medication create(PrescriptionMedicationDTOForCreate body);
+    Medication create(PrescriptionMedicationDTOForCreate body, Long prescriptionId);
 
 }

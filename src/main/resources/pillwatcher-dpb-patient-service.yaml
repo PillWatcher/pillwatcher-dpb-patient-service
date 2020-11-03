@@ -1837,8 +1837,9 @@ definitions:
         type: string
       dosage:
         description: 'Medicine dosage'
-        example: '5 mg'
-        type: string
+        example: 5
+        type: number
+        format: int32
       inclusionDate:
         description: 'Inclusion date of prescription'
         example: '2020-01-21T23:23:23Z'

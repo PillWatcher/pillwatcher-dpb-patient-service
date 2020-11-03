@@ -20,6 +20,10 @@ public final class ValidationConstraints {
 
     public static final String PRESCRIPTION_NOT_FOUND = "Prescription with ID {} not found";
 
+    public static final String MEDICINE_NOT_FOUND = "Medicine with ID {} not found";
+
+    public static final String CUP_NOT_FOUND = "Cup with tag {} not found";
+
     public static final int NAME_MIN_SIZE = 3;
     public static final int NAME_MAX_SIZE = 120;
 

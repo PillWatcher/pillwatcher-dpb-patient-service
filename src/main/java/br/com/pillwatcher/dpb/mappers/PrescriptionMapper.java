@@ -4,14 +4,11 @@ import br.com.pillwatcher.dpb.entities.Prescription;
 import io.swagger.model.PatientPrescriptionDTOForCreate;
 import io.swagger.model.PatientPrescriptionDTOForGetAll;
 import io.swagger.model.PatientPrescriptionDTOForResponse;
-import org.mapstruct.IterableMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
+import org.mapstruct.*;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface PrescriptionMapper {
 
     @Mappings({

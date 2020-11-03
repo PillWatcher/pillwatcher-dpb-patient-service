@@ -7,13 +7,13 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
-@Table(name = "MEDICATION", uniqueConstraints = @UniqueConstraint(columnNames={"ID_PRESCRIPTION", "ID_MEDICINE"}))
+@Table(name = "MEDICATION", uniqueConstraints = @UniqueConstraint(columnNames = {"ID_PRESCRIPTION", "ID_MEDICINE"}))
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Medication extends Auditable {
@@ -49,13 +49,13 @@ public class Medication extends Auditable {
     private String observation;
 
     @Column(name = "AVAILABLE_QUANTITY")
-    private Integer quantityAvailable;
+    private Integer availableQuantity;
 
     @Column(name = "START_DATE")
-    private LocalDateTime startDate;
+    private LocalDate startDate;
 
     @Column(name = "EXPIRATION_DATE")
-    private LocalDateTime expirationDate;
+    private LocalDate expirationDate;
 
     @Column(name = "LOCATION")
     private Integer location;
