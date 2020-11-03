@@ -17,6 +17,7 @@ import io.swagger.model.PatientPrescriptionDTOForResponse;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
+import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
@@ -24,6 +25,7 @@ import java.util.Optional;
 
 @Slf4j
 @AllArgsConstructor
+@Service
 public class PrescriptionServiceImpl implements PrescriptionService {
 
     private final PrescriptionRepository prescriptionRepository;
