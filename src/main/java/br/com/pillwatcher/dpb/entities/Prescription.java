@@ -7,12 +7,13 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "PRESCRIPTION")
+@Entity
+@Table(name = "PRESCRIPTION")
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Prescription extends Auditable {
@@ -31,6 +32,6 @@ public class Prescription extends Auditable {
     private String imageUrl;
 
     @Column(name = "VALIDITY_DATE")
-    private LocalDateTime validityDate;
+    private LocalDate validityDate;
 
 }

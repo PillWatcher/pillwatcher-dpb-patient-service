@@ -10,7 +10,8 @@ import javax.persistence.*;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "NURSE_PATIENT")
+@Entity
+@Table(name = "NURSE_PATIENT")
 @EntityListeners(AuditingEntityListener.class)
 public class NursePatient {
 

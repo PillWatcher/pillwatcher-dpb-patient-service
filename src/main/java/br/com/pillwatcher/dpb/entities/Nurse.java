@@ -14,7 +14,8 @@ import javax.validation.constraints.Email;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "NURSE")
+@Table(name = "NURSE")
+@Entity
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Nurse extends Auditable {

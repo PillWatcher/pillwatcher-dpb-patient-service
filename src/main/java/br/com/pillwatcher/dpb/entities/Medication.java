@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "MEDICATION")
+@Entity
+@Table(name = "MEDICATION", uniqueConstraints = @UniqueConstraint(columnNames={"ID_PRESCRIPTION", "ID_MEDICINE"}))
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Medication extends Auditable {

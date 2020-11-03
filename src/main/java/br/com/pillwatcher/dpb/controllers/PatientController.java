@@ -31,12 +31,13 @@ public class PatientController implements PatientsApi {
     private final PatientService service;
 
     @Override
-    public ResponseEntity<PatientDTOForResponse> createPatient(@Valid @RequestBody final PatientDTOForCreate dtoForCreate) {
+    public ResponseEntity<PatientDTOForResponse> createPatient(@Valid @RequestBody final PatientDTOForCreate dtoForCreate,
+                                                               @Valid @RequestParam(value = "nurseId") final Long nurseId) {
 
         log.info("PatientController.createPatient - Start - Input - [{}]", dtoForCreate);
         log.debug("PatientController.createPatient - Start - Input - Order: {}", dtoForCreate);
 
-        Patient patient = service.create(dtoForCreate);
+        Patient patient = service.create(dtoForCreate, nurseId);
 
         ResponseEntity<PatientDTOForResponse> response = ResponseEntity.status(HttpStatus.CREATED)
                 .body(mapper.toPatientForResponse(patient));
@@ -48,8 +49,8 @@ public class PatientController implements PatientsApi {
 
     @Override
     public ResponseEntity<PatientDTOForResponse> updatePatient(@Valid final @RequestBody PatientDTOForUpdate dtoForUpdate,
-                                                               final @PathVariable("cpf") String cpf,
-                                                               final @RequestParam(value = "nurseId") String nurseId) {
+                                                               final @RequestParam(value = "nurseId") Long nurseId,
+                                                               final @PathVariable("cpf") String cpf) {
 
         log.info("PatientController.updatePatient - Start - Input - [{}, {}]", dtoForUpdate, cpf);
         log.debug("PatientController.updatePatient - Start - Input - Order: {} - {}", dtoForUpdate, cpf);
@@ -66,7 +67,7 @@ public class PatientController implements PatientsApi {
 
     @Override
     public ResponseEntity<PatientDTOForResponse> getPatient(final @PathVariable("cpf") String cpf,
-                                                            final @RequestParam(value = "nurseId") String nurseId) {
+                                                            final @RequestParam(value = "nurseId") Long nurseId) {
 
         log.info("PatientController.getPatient - Start - Input - [{}]", cpf);
         log.debug("PatientController.getPatient - Start - Input - Order: {} ", cpf);
@@ -82,7 +83,7 @@ public class PatientController implements PatientsApi {
     }
 
     @Override
-    public ResponseEntity<PatientDTOForGet> getAllPatients(final @RequestParam("nurseId") String nurseId) {
+    public ResponseEntity<PatientDTOForGet> getAllPatients(final @RequestParam("nurseId") Long nurseId) {
 
         log.info("PatientController.deletePatient - Start - Input - [{}]", "");
         log.debug("PatientController.deletePatient - Start - Input - Order: {} ", "");
@@ -99,7 +100,7 @@ public class PatientController implements PatientsApi {
 
     @Override
     public ResponseEntity<Void> deletePatient(final @PathVariable("cpf") String cpf,
-                                              final @RequestParam(name = "nurseId") String nurseId) {
+                                              final @RequestParam(name = "nurseId") Long nurseId) {
 
         log.info("PatientController.deletePatient - Start - Input - [{}]", cpf);
         log.debug("PatientController.deletePatient - Start - Input - Order: {} ", cpf);

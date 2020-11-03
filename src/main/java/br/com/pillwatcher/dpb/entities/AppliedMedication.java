@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "APPLIED_MEDICATION")
+@Entity
+@Table(name = "APPLIED_MEDICATION")
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class AppliedMedication {

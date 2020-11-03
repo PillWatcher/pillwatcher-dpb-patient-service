@@ -11,8 +11,8 @@ schemes:
   - "http"
 tags:
   - name: Patient
-  - name: PatientPrescription
-  - name: PrescriptionMedication
+  - name: Prescription
+  - name: Medication
   - name: Medicine
   - name: Supply
 paths:
@@ -26,6 +26,12 @@ paths:
       produces:
         - "application/json"
       parameters:
+        - name: nurseId
+          description: 'Nurse Id'
+          in: query
+          type: number
+          format: int64
+          required: true
         - name: patientDtoForCreate
           in: body
           required: true
@@ -84,7 +90,8 @@ paths:
         - name: nurseId
           description: 'Nurse Id'
           in: query
-          type: string
+          type: number
+          format: int64
       responses:
         '200':
           description: Ok
@@ -144,7 +151,9 @@ paths:
         - name: nurseId
           description: 'Nurse Id'
           in: query
-          type: string
+          type: number
+          format: int64
+          required: true
       responses:
         '200':
           description: Ok
@@ -217,7 +226,9 @@ paths:
         - name: nurseId
           description: 'Nurse Id'
           in: query
-          type: string
+          type: number
+          format: int64
+          required: true
       responses:
         '200':
           description: 'Patient Object'
@@ -285,7 +296,9 @@ paths:
         - name: nurseId
           description: 'Nurse Id'
           in: query
-          type: string
+          type: number
+          format: int64
+          required: true
       responses:
         '200':
           description: Ok
@@ -403,26 +416,27 @@ paths:
               code: UNEXPECTED_ERROR
               message: "Internal server error"
               details: ["Internal server error"]
-  '/patients/{cpf}/prescriptions':
+  '/prescriptions':
     post:
       summary: "Add a new Patient Prescription to Pillwatcher"
       description: "Add a new Patient Prescription to Pillwatcher"
       tags:
-        - PatientPrescription
+        - Prescription
       operationId: "createPatientPrescription"
       produces:
         - "application/json"
       parameters:
         - name: cpf
           description: 'Patient Official Document (CPF)'
-          in: path
-          required: true
+          in: query
           type: string
+          required: true
         - name: nurseId
           description: 'Nurse Id'
           in: query
           type: number
           format: int64
+          required: true
         - name: patientDtoForCreate
           in: body
           required: true
@@ -473,21 +487,16 @@ paths:
       summary: "Get a list of Patient Prescription to Pillwatcher"
       description: "Get a list of Patient Prescription to Pillwatcher"
       tags:
-        - PatientPrescription
+        - Prescription
       operationId: "getAllPatientPrescription"
       produces:
         - "application/json"
       parameters:
         - name: cpf
           description: 'Patient Official Document (CPF)'
-          in: path
+          in: query
           required: true
           type: string
-        - name: nurseId
-          description: 'Nurse Id'
-          in: query
-          type: number
-          format: int64
       responses:
         '200':
           description: 'Patient founded'
@@ -538,26 +547,16 @@ paths:
               code: UNEXPECTED_ERROR
               message: "Internal server error"
               details: ["Internal server error"]
-  '/patients/{cpf}/prescriptions/{prescriptionId}':
+  '/prescriptions/{prescriptionId}':
     get:
       summary: "Get a Patient Prescription to Pillwatcher"
       description: "Get a Patient Prescription to Pillwatcher"
       tags:
-        - PatientPrescription
+        - Prescription
       operationId: "getPatientPrescription"
       produces:
         - "application/json"
       parameters:
-        - name: cpf
-          description: 'Patient Official Document (CPF)'
-          in: path
-          required: true
-          type: number
-          format: int64
-        - name: nurseId
-          description: 'Nurse Id'
-          in: query
-          type: string
         - name: prescriptionId
           description: 'Prescription Id'
           in: path
@@ -618,21 +617,11 @@ paths:
       summary: "Add a new Patient Prescription to Pillwatcher"
       description: "Add a new Patient Prescription to Pillwatcher"
       tags:
-        - PatientPrescription
+        - Prescription
       operationId: "updatePatientPrescription"
       produces:
         - "application/json"
       parameters:
-        - name: cpf
-          description: 'Patient Official Document (CPF)'
-          in: path
-          required: true
-          type: string
-        - name: nurseId
-          description: 'Nurse Id'
-          in: query
-          type: number
-          format: int64
         - name: patientDtoForCreate
           in: body
           required: true
@@ -689,21 +678,11 @@ paths:
       summary: "Delete a Patient Prescription to Pillwatcher"
       description: "Delete a Patient Prescription to Pillwatcher"
       tags:
-        - PatientPrescription
+        - Prescription
       operationId: "deletePatientPrescription"
       produces:
         - "application/json"
       parameters:
-        - name: cpf
-          description: 'Patient Official Document (CPF)'
-          in: path
-          required: true
-          type: number
-          format: int64
-        - name: nurseId
-          description: 'Nurse Id'
-          in: query
-          type: string
         - name: prescriptionId
           description: 'Prescription Id'
           in: path
@@ -758,19 +737,19 @@ paths:
               code: UNEXPECTED_ERROR
               message: "Internal server error"
               details: ["Internal server error"]
-  '/prescription/{prescriptionId}/medications':
+  '/medications':
     post:
       summary: "Add a new medication to prescription"
       description: "Add a new medication to prescription"
       tags:
-        - PrescriptionMedication
+        - Medication
       operationId: "createMedication"
       produces:
         - "application/json"
       parameters:
         - name: prescriptionId
           description: 'Prescription id'
-          in: path
+          in: query
           required: true
           type: number
           format: int64
@@ -824,14 +803,14 @@ paths:
       summary: "Get a medication to prescription"
       description: "Get a medication to prescription"
       tags:
-        - PrescriptionMedication
+        - Medication
       operationId: "getAllMedication"
       produces:
         - "application/json"
       parameters:
         - name: prescriptionId
           description: 'Prescription id'
-          in: path
+          in: query
           required: true
           type: number
           format: int64
@@ -885,22 +864,16 @@ paths:
               code: UNEXPECTED_ERROR
               message: "Internal server error"
               details: ["Internal server error"]
-  '/prescription/{prescriptionId}/medications/{medicationId}':
+  '/medications/{medicationId}':
     get:
       summary: "Get a medication to prescription"
       description: "Get a medication to prescription"
       tags:
-        - PrescriptionMedication
+        - Medication
       operationId: "getMedication"
       produces:
         - "application/json"
       parameters:
-        - name: prescriptionId
-          description: 'Prescription id'
-          in: path
-          required: true
-          type: number
-          format: int64
         - name: medicationId
           description: 'Medication id'
           in: path
@@ -961,17 +934,11 @@ paths:
       summary: "Update a medication to prescription"
       description: "Update a medication to prescription"
       tags:
-        - PrescriptionMedication
+        - Medication
       operationId: "updateMedication"
       produces:
         - "application/json"
       parameters:
-        - name: prescriptionId
-          description: 'Prescription id'
-          in: path
-          required: true
-          type: number
-          format: int64
         - name: medicationId
           description: 'Medication id'
           in: path
@@ -1037,17 +1004,11 @@ paths:
       summary: "Delete a medication to prescription"
       description: "Delete a medication to prescription"
       tags:
-        - PrescriptionMedication
+        - Medication
       operationId: "deleteMedication"
       produces:
         - "application/json"
       parameters:
-        - name: prescriptionId
-          description: 'Prescription id'
-          in: path
-          required: true
-          type: number
-          format: int64
         - name: medicationId
           description: 'Medication id'
           in: path
@@ -1555,11 +1516,6 @@ definitions:
         description: 'Patient Observation'
         example: 'O paciente possui pressão alta;'
         type: string
-      nurseId:
-        description: 'Nurse id'
-        example: 145
-        type: number
-        format: int64
   PatientDTOForResponse:
     type: 'object'
     description: 'Structure used to create a Patient on Pillwatcher'

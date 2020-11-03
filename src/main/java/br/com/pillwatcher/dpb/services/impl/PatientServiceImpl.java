@@ -22,7 +22,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,11 +38,11 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
-    public Patient create(final PatientDTOForCreate patientDto) {
+    public Patient create(final PatientDTOForCreate patientDto, final Long nurseId) {
 
         log.info("PatientServiceImpl.create - Start - Input {}", patientDto);
 
-        Optional<Nurse> nurseFound = nRepository.findById(patientDto.getNurseId().longValue());
+        Optional<Nurse> nurseFound = nRepository.findById(nurseId);
         Optional<Patient> patientFound = repository.findPatientByUserDocument(patientDto.getDocument());
 
         if (patientFound.isPresent()) {
@@ -53,11 +52,11 @@ public class PatientServiceImpl implements PatientService {
         }
 
         if (!nurseFound.isPresent()) {
-            log.warn(ValidationConstraints.NURSE_NOT_FOUND, patientDto.getNurseId());
+            log.warn(ValidationConstraints.NURSE_NOT_FOUND, nurseId);
             throw new PatientException(ErrorCodeEnum.NURSE_NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(
                             ValidationConstraints.NURSE_NOT_FOUND, "{}",
-                            String.valueOf(patientDto.getNurseId())));
+                            String.valueOf(nurseId)));
         }
 
         NursePatient nursePatient = new NursePatient();
@@ -72,28 +71,19 @@ public class PatientServiceImpl implements PatientService {
 
     @Override
     @Transactional
-    public Patient update(final PatientDTOForUpdate patientDtoForUpdate, final String document, final String nurseId) {
+    public Patient update(final PatientDTOForUpdate patientDtoForUpdate, final String document, final Long nurseId) {
 
         log.info("PatientServiceImpl.update - Start - Input {} {}", patientDtoForUpdate, document);
 
-        Optional<Patient> patientOptional = repository.findPatientByUserDocument(document);
+        Optional<NursePatient> nursePatient = getNursePatient(document, nurseId);
 
-        if (!patientOptional.isPresent()) {
+        if (!nursePatient.isPresent()) {
             log.warn(ValidationConstraints.PATIENT_NOT_FOUND, document);
             throw new PatientException(ErrorCodeEnum.PATIENT_NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", document));
         }
 
-        Patient patient = patientOptional.get();
-
-        Optional<NursePatient> nursePatientFound = nPatientRepository.findByNurseIdAndPatientId(
-                Long.valueOf(nurseId), patient.getId());
-
-        if (!nursePatientFound.isPresent()) {
-            log.warn(ValidationConstraints.PATIENT_NOT_FOUND, nurseId);
-            throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
-                    StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", nurseId));
-        }
+        Patient patient = nursePatient.get().getPatient();
 
         BeanUtils.copyProperties(
                 patientDtoForUpdate,
@@ -111,36 +101,26 @@ public class PatientServiceImpl implements PatientService {
     /**
      * Find Patients based on CPF and Nurse Id.
      * A Nurse can only see Patients that are linked to they
+     *
      * @param document
      * @param nurseId
      * @return PatientDTOForGet
      */
     @Override
     @Transactional
-    public Patient findPatient(final String document, final String nurseId) {
+    public Patient findPatient(final String document, final Long nurseId) {
 
         log.info("PatientServiceImpl.findPatient - Start - Input {}", document);
 
-        Optional<Patient> patientOptional = repository.findPatientByUserDocument(document);
+        Optional<NursePatient> nursePatient = getNursePatient(document, nurseId);
 
-        if (!patientOptional.isPresent()) {
-            log.warn(ValidationConstraints.PATIENT_NOT_FOUND, document);
-            throw new PatientException(ErrorCodeEnum.PATIENT_NOT_FOUND, ErrorMessages.NOT_FOUND,
-                    StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", document));
-        }
-
-        Patient patient = patientOptional.get();
-
-        Optional<NursePatient> nursePatientFound = nPatientRepository.findByNurseIdAndPatientId(
-                Long.valueOf(nurseId), patient.getId());
-
-        if (!nursePatientFound.isPresent()) {
+        if (!nursePatient.isPresent()) {
             log.warn(ValidationConstraints.PATIENT_NOT_FOUND, nurseId);
             throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
-                    StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", nurseId));
+                    StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", nurseId.toString()));
         }
 
-        return patientOptional.get();
+        return nursePatient.get().getPatient();
     }
 
 
@@ -150,51 +130,38 @@ public class PatientServiceImpl implements PatientService {
      */
     @Override
     @Transactional
-    public List<PatientDTOForResponse> findPatients(final String nurseId) {
+    public List<PatientDTOForResponse> findPatients(final Long nurseId) {
 
         log.info("PatientServiceImpl.findPatient - Start - Input {}", "");
 
-        List<Patient> patients = repository.findAll();
-        List<PatientDTOForResponse> patientDTOForResponses = new ArrayList<>();
-
-        patients.forEach(patient -> {
-            Optional<NursePatient> nursePatientOptional = nPatientRepository
-                    .findByNurseIdAndPatientId(Long.valueOf(nurseId), patient.getId());
-
-            if (nursePatientOptional.isPresent()) {
-                patientDTOForResponses.add(mapper.toPatientForResponse(patient));
-            }
-        });
-
-        return patientDTOForResponses;
+        return mapper.toPatientForResponse(repository.findAllByNurse(nurseId));
     }
 
     @Override
-    public void deletePatient(final String document, final String nurseId) {
+    public void deletePatient(final String document, final Long nurseId) {
 
         log.info("AdminServiceImpl.deleteAdmin - Start - Input {}", document);
 
-        Optional<Patient> patientOptional = repository.findPatientByUserDocument(document);
-
-        if (!patientOptional.isPresent()) {
-            log.warn(ValidationConstraints.PATIENT_NOT_FOUND, document);
-            throw new PatientException(ErrorCodeEnum.PATIENT_NOT_FOUND, ErrorMessages.NOT_FOUND,
-                    StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", document));
-        }
-
-        Patient patient = patientOptional.get();
-
-        Optional<NursePatient> nursePatient = nPatientRepository
-                .findByNurseIdAndPatientId(Long.valueOf(nurseId), patient.getId());
+        Optional<NursePatient> nursePatient = getNursePatient(document, nurseId);
 
         if (!nursePatient.isPresent()) {
             log.warn(ValidationConstraints.PATIENT_NOT_FOUND, nurseId);
             throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
-                    StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", nurseId));
+                    StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", nurseId.toString()));
         }
 
-        repository.delete(patientOptional.get());
+        repository.delete(nursePatient.get().getPatient());
 
+    }
+
+    @Override
+    public Optional<NursePatient> getNursePatient(final String cpf, final Long nurseId) {
+        return nPatientRepository.findByNurseIdAndPatientCPF(nurseId, cpf);
+    }
+
+    @Override
+    public Optional<Patient> findPatientByUserDocument(final String cpf) {
+        return repository.findPatientByUserDocument(cpf);
     }
 
 }

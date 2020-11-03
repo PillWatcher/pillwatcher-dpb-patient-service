@@ -17,7 +17,8 @@ import static br.com.pillwatcher.dpb.constants.ValidationConstraints.*;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "USER")
+@Entity
+@Table(name = "USER")
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class User {

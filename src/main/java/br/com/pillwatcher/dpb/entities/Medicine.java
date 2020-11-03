@@ -12,7 +12,8 @@ import javax.persistence.*;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "MEDICINE")
+@Entity
+@Table(name = "MEDICINE")
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Medicine extends Auditable {

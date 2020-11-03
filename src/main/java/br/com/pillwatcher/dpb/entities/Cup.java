@@ -11,7 +11,8 @@ import javax.persistence.*;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "CUP")
+@Entity
+@Table(name = "CUP")
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Cup {

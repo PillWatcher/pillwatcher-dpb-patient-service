@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "SUPPLY")
+@Entity
+@Table(name = "SUPPLY")
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Supply extends Auditable{
