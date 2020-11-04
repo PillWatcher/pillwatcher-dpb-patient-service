@@ -11,7 +11,6 @@ import org.mapstruct.NullValueCheckStrategy;
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface MedicationMapper {
 
-
     @Mappings({
             @Mapping(target = "medicine.id", source = "prescriptionMedicationDTOForCreate.medicineId"),
             @Mapping(target = "prescription.id", source = "prescriptionId"),

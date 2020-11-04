@@ -16,10 +16,11 @@ public final class ValidationConstraints {
     public static final String PATIENT_ALREADY_EXISTS = "Patient with CPF {} already exists";
 
     public static final String MISSING_PARAMETERS = "Method {} is missing parameters";
+    public static final String MEDICINE_NOT_FOUND = "Medicine with ID {} not found";
+    public static final String MEDICINE_ALREADY_EXISTS = "Medicine {} already exists";
 
     public static final String PRESCRIPTION_NOT_FOUND = "Prescription with ID {} not found";
 
-    public static final String MEDICINE_NOT_FOUND = "Medicine with ID {} not found";
 
     public static final String CUP_NOT_FOUND = "Cup with tag {} not found";
 
