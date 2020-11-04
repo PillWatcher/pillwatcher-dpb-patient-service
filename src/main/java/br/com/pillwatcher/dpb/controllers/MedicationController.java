@@ -37,7 +37,7 @@ public class MedicationController implements MedicationsApi {
     public ResponseEntity<PrescriptionMedicationDTOForResponse> createMedication(@Valid final PrescriptionMedicationDTOForCreate body,
                                                                                  @NotNull @Valid final Long prescriptionId) {
 
-        log.info("MedicationController.MedicationController - Start - Input - [{}]", body);
+        log.info("MedicationController.createMedication - Start - Input - [{}]", body);
 
         Medication medication = service.create(body, prescriptionId);
 

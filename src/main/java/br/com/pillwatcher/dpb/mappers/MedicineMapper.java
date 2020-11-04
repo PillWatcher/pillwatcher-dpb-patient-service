@@ -2,6 +2,7 @@ package br.com.pillwatcher.dpb.mappers;
 
 import br.com.pillwatcher.dpb.entities.Medicine;
 import io.swagger.model.MedicineDTOForCreate;
+import io.swagger.model.MedicineDTOForResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.NullValueCheckStrategy;
 
@@ -9,5 +10,7 @@ import org.mapstruct.NullValueCheckStrategy;
 public interface MedicineMapper {
 
     Medicine dtoToEntity(MedicineDTOForCreate medicineDto);
+
+    MedicineDTOForResponse toDtoForResponse(Medicine medicine);
 
 }
