@@ -13,7 +13,7 @@ import javax.persistence.*;
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
 @Entity
-@Table(name = "MEDICINE")
+@Table(name = "MEDICINE", uniqueConstraints = @UniqueConstraint(columnNames = {"DOSAGE", "DOSAGE_TYPE"}))
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Medicine extends Auditable {

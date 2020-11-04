@@ -6,6 +6,7 @@ import br.com.pillwatcher.dpb.entities.NursePatient;
 import br.com.pillwatcher.dpb.entities.Patient;
 import br.com.pillwatcher.dpb.entities.Prescription;
 import br.com.pillwatcher.dpb.exceptions.PatientException;
+import br.com.pillwatcher.dpb.exceptions.PrescriptionException;
 import br.com.pillwatcher.dpb.mappers.PrescriptionMapper;
 import br.com.pillwatcher.dpb.repositories.PrescriptionRepository;
 import br.com.pillwatcher.dpb.services.PatientService;
@@ -45,7 +46,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         if (!nursePatientFound.isPresent()) {
             log.warn(ValidationConstraints.PATIENT_NOT_FOUND, nurseId);
-            throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
+            throw new PrescriptionException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", nurseId.toString()));
         }
 
@@ -67,7 +68,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         if (!optionalPrescription.isPresent()) {
             log.warn(ValidationConstraints.PRESCRIPTION_NOT_FOUND, prescriptionId);
-            throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
+            throw new PrescriptionException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(ValidationConstraints.PRESCRIPTION_NOT_FOUND, "{}", prescriptionId.toString()));
         }
 
@@ -84,7 +85,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         if (!patientByUserDocument.isPresent()) {
             log.warn(ValidationConstraints.PATIENT_NOT_FOUND, cpf);
-            throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
+            throw new PrescriptionException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", cpf));
         }
 
@@ -103,7 +104,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         if (!optionalPrescription.isPresent()) {
             log.warn(ValidationConstraints.PRESCRIPTION_NOT_FOUND, prescriptionId);
-            throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
+            throw new PrescriptionException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(ValidationConstraints.PRESCRIPTION_NOT_FOUND, "{}", prescriptionId.toString()));
         }
 
@@ -120,7 +121,7 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         if (!optionalPrescription.isPresent()) {
             log.warn(ValidationConstraints.PRESCRIPTION_NOT_FOUND, prescriptionId);
-            throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
+            throw new PrescriptionException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(ValidationConstraints.PRESCRIPTION_NOT_FOUND, "{}", prescriptionId.toString()));
         }
 

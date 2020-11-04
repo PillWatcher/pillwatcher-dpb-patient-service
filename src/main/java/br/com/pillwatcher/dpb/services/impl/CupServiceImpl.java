@@ -3,7 +3,7 @@ package br.com.pillwatcher.dpb.services.impl;
 import br.com.pillwatcher.dpb.constants.ErrorMessages;
 import br.com.pillwatcher.dpb.constants.ValidationConstraints;
 import br.com.pillwatcher.dpb.entities.Cup;
-import br.com.pillwatcher.dpb.exceptions.PatientException;
+import br.com.pillwatcher.dpb.exceptions.CupException;
 import br.com.pillwatcher.dpb.repositories.CupRepository;
 import br.com.pillwatcher.dpb.services.CupService;
 import io.swagger.model.ErrorCodeEnum;
@@ -28,7 +28,7 @@ public class CupServiceImpl implements CupService {
 
         if (!cupOptional.isPresent()) {
             log.warn(ValidationConstraints.CUP_NOT_FOUND, tag);
-            throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
+            throw new CupException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(ValidationConstraints.CUP_NOT_FOUND, "{}", tag));
         }
 
