@@ -85,7 +85,7 @@ public class MedicationServiceImpl implements MedicationService {
 
         Medication medication = getMedication(medicationId);
 
-        repository.deleteById(medication.getId());
+        repository.delete(medication);
     }
 
     @Override

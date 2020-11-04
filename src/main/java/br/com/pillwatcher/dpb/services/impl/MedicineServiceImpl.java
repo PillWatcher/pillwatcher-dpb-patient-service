@@ -11,10 +11,12 @@ import io.swagger.model.ErrorCodeEnum;
 import io.swagger.model.MedicineDTOForCreate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -49,6 +51,8 @@ public class MedicineServiceImpl implements MedicineService {
     @Transactional
     public Medicine getMedication(final Long medicineId) {
 
+        log.info("MedicineServiceImpl.getMedication - Start - Input {}", medicineId);
+
         Optional<Medicine> medicineOptional = repository.findById(medicineId);
 
         if (!medicineOptional.isPresent()) {
@@ -64,16 +68,33 @@ public class MedicineServiceImpl implements MedicineService {
     @Transactional
     public void deleteMedicine(final Long medicineId) {
 
-        log.info("MedicineServiceImpl.create - Start - Input {}", medicineId);
+        log.info("MedicineServiceImpl.deleteMedicine - Start - Input {}", medicineId);
 
-        Optional<Medicine> medicineFound = repository.findById(medicineId);
+        Medicine medication = getMedication(medicineId);
 
-        if (!medicineFound.isPresent()) {
-            log.warn(ValidationConstraints.MEDICINE_NOT_FOUND, medicineId);
-            throw new MedicineException(ErrorCodeEnum.UNEXPECTED_ERROR, ErrorMessages.CONFLICT,
-                    StringUtils.replace(ValidationConstraints.MEDICINE_NOT_FOUND, "{}", String.valueOf(medicineId)));
-        }
+        repository.delete(medication);
+    }
 
-        repository.delete(medicineFound.get());
+    @Override
+    public List<Medicine> getAll() {
+
+        log.info("MedicineServiceImpl.getAll - Start");
+
+        return repository.findAll();
+    }
+
+    @Override
+    public Medicine updateMedicine(final MedicineDTOForCreate medicineDTOForUpdate, final Long medicineId) {
+
+        log.info("MedicineServiceImpl.updateMedicine - Start - Input {}", medicineDTOForUpdate);
+
+        Medicine medication = getMedication(medicineId);
+
+        BeanUtils.copyProperties(
+                medicineDTOForUpdate,
+                medication,
+                "id", "inclusionDate");
+
+        return repository.save(medication);
     }
 }
