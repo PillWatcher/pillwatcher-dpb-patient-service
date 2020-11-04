@@ -1,12 +1,12 @@
 package br.com.pillwatcher.dpb.mappers;
 
 import br.com.pillwatcher.dpb.entities.Medication;
+import io.swagger.model.PrescriptionMedicationDTOForAll;
 import io.swagger.model.PrescriptionMedicationDTOForCreate;
 import io.swagger.model.PrescriptionMedicationDTOForResponse;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.NullValueCheckStrategy;
+import org.mapstruct.*;
+
+import java.util.List;
 
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface MedicationMapper {
@@ -35,4 +35,7 @@ public interface MedicationMapper {
             @Mapping(target = "availableQuantity", source = "availableQuantity")
     })
     PrescriptionMedicationDTOForResponse entityToDto(final Medication medication);
+
+    @IterableMapping(qualifiedByName = "entityToDto")
+    PrescriptionMedicationDTOForAll entitiesToDtos(final List<Medication> medication);
 }

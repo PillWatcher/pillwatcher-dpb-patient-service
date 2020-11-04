@@ -4,7 +4,6 @@ import br.com.pillwatcher.dpb.constants.ErrorMessages;
 import br.com.pillwatcher.dpb.constants.ValidationConstraints;
 import br.com.pillwatcher.dpb.entities.Medicine;
 import br.com.pillwatcher.dpb.exceptions.MedicineException;
-import br.com.pillwatcher.dpb.exceptions.PatientException;
 import br.com.pillwatcher.dpb.mappers.MedicineMapper;
 import br.com.pillwatcher.dpb.repositories.MedicineRepository;
 import br.com.pillwatcher.dpb.services.MedicineService;
@@ -32,8 +31,8 @@ public class MedicineServiceImpl implements MedicineService {
 
         log.info("MedicineServiceImpl.create - Start - Input {}", medicineDto);
 
-        /*Optional<Medicine> medicineFound = medicineRepository.findById();*/ //TODO refactor
-        Optional<Medicine> medicineFound = Optional.empty();
+        Optional<Medicine> medicineFound = repository.findByDosageAndAndDosageTypeAndName(Integer.valueOf(medicineDto.getDosage().toString()),
+                medicineDto.getDosageType(), medicineDto.getName());
 
         if (medicineFound.isPresent()) {
             log.warn(ValidationConstraints.MEDICINE_ALREADY_EXISTS, medicineDto.getName());
@@ -54,7 +53,7 @@ public class MedicineServiceImpl implements MedicineService {
 
         if (!medicineOptional.isPresent()) {
             log.warn(ValidationConstraints.MEDICINE_NOT_FOUND, medicineId);
-            throw new PatientException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
+            throw new MedicineException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
                     StringUtils.replace(ValidationConstraints.MEDICINE_NOT_FOUND, "{}", medicineId.toString()));
         }
 
@@ -67,8 +66,7 @@ public class MedicineServiceImpl implements MedicineService {
 
         log.info("MedicineServiceImpl.create - Start - Input {}", medicineId);
 
-        /*Optional<Medicine> medicineFound = medicineRepository.findById();*/ //TODO refactor
-        Optional<Medicine> medicineFound = Optional.empty();
+        Optional<Medicine> medicineFound = repository.findById(medicineId);
 
         if (!medicineFound.isPresent()) {
             log.warn(ValidationConstraints.MEDICINE_NOT_FOUND, medicineId);

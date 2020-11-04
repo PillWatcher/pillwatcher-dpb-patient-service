@@ -17,6 +17,8 @@ import io.swagger.model.ErrorCodeEnum;
 import io.swagger.model.PrescriptionMedicationDTOForCreate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.logging.log4j.util.Strings;
+import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
@@ -81,15 +83,9 @@ public class MedicationServiceImpl implements MedicationService {
 
         log.info("MedicationServiceImpl.deleteMedication - Start - Input {}", medicationId);
 
-        Optional<Medication> optionalMedication = repository.findById(medicationId);
+        Medication medication = getMedication(medicationId);
 
-        if (!optionalMedication.isPresent()) {
-            log.warn(ValidationConstraints.MEDICATION_NOT_FOUND, medicationId);
-            throw new MedicationException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
-                    StringUtils.replace(ValidationConstraints.MEDICATION_NOT_FOUND, "{}", medicationId.toString()));
-        }
-
-        repository.deleteById(medicationId);
+        repository.deleteById(medication.getId());
     }
 
     @Override
@@ -105,6 +101,31 @@ public class MedicationServiceImpl implements MedicationService {
                     StringUtils.replace(ValidationConstraints.PRESCRIPTION_NOT_FOUND, "{}", prescriptionId.toString()));
         }
 
-        return null;
+        return repository.findByPrescriptionId(prescriptionId);
+    }
+
+    @Override
+    public Medication updateMedication(final PrescriptionMedicationDTOForCreate prescriptionMedicationDTOForUpdate, final Long medicationId) {
+
+        log.info("MedicationServiceImpl.updateMedication - Start - Input {}", prescriptionMedicationDTOForUpdate);
+
+        Medication medication = getMedication(medicationId);
+
+        BeanUtils.copyProperties(
+                prescriptionMedicationDTOForUpdate,
+                medication,
+                "id", "inclusionDate");
+
+        if (Strings.isNotEmpty(prescriptionMedicationDTOForUpdate.getCupTag())) {
+            Cup cupByTag = cupService.findCupByTag(prescriptionMedicationDTOForUpdate.getCupTag());
+            medication.setCup(cupByTag);
+        }
+
+        if (prescriptionMedicationDTOForUpdate.getMedicineId() != null) {
+            Medicine medicine = medicineService.getMedication(prescriptionMedicationDTOForUpdate.getMedicineId());
+            medication.setMedicine(medicine);
+        }
+
+        return repository.save(medication);
     }
 }

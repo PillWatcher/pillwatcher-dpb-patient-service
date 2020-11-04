@@ -17,4 +17,6 @@ public interface MedicationService {
 
     List<Medication> getAllMedication(Long prescriptionId);
 
+    Medication updateMedication(PrescriptionMedicationDTOForCreate body, Long medicationId);
+
 }

@@ -8,6 +8,7 @@ import io.swagger.model.PatientPrescriptionDTOForGetAll;
 import io.swagger.model.PatientPrescriptionDTOForResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,7 +35,8 @@ public class PrescriptionController implements PrescriptionsApi {
 
         final PatientPrescriptionDTOForResponse patientPrescription = prescriptionService.createPatientPrescription(body, cpf, nurseId);
 
-        ResponseEntity<PatientPrescriptionDTOForResponse> response = ResponseEntity.ok(patientPrescription);
+        ResponseEntity<PatientPrescriptionDTOForResponse> response =
+                ResponseEntity.status(HttpStatus.CREATED).body(patientPrescription);
 
         log.debug("PrescriptionController.createPatientPrescription - End - Input: {} - Output: {}", body, response);
 
@@ -98,5 +100,5 @@ public class PrescriptionController implements PrescriptionsApi {
 
         return response;
     }
-    
+
 }

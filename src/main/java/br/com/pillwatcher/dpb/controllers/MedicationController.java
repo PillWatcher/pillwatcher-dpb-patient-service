@@ -1,12 +1,10 @@
 package br.com.pillwatcher.dpb.controllers;
 
 import br.com.pillwatcher.dpb.entities.Medication;
-import br.com.pillwatcher.dpb.entities.Patient;
 import br.com.pillwatcher.dpb.mappers.MedicationMapper;
 import br.com.pillwatcher.dpb.services.MedicationService;
 import io.swagger.annotations.Api;
 import io.swagger.api.MedicationsApi;
-import io.swagger.model.PatientDTOForResponse;
 import io.swagger.model.PrescriptionMedicationDTOForAll;
 import io.swagger.model.PrescriptionMedicationDTOForCreate;
 import io.swagger.model.PrescriptionMedicationDTOForResponse;
@@ -19,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 import static br.com.pillwatcher.dpb.constants.UrlConstants.BASE_URI;
 
@@ -44,28 +43,66 @@ public class MedicationController implements MedicationsApi {
         ResponseEntity<PrescriptionMedicationDTOForResponse> response = ResponseEntity.status(HttpStatus.CREATED)
                 .body(medicationMapper.entityToDto(medication));
 
-        log.debug("MedicationController.MedicationController - End - Input: {} - Output: {}", body, response);
+        log.debug("MedicationController.createMedication - End - Input: {} - Output: {}", body, response);
 
         return response;
     }
 
     @Override
-    public ResponseEntity<Void> deleteMedication(Long medicationId) {
-        return null;
+    public ResponseEntity<Void> deleteMedication(final Long medicationId) {
+
+        log.info("MedicationController.deleteMedication - Start - Input - [{}]", medicationId);
+
+        service.deleteMedication(medicationId);
+
+        ResponseEntity<Void> response = ResponseEntity
+                .ok()
+                .build();
+
+        log.debug("MedicationController.deleteMedication - End - Input: {} - Output: {}", medicationId, response);
+        return response;
     }
 
     @Override
-    public ResponseEntity<PrescriptionMedicationDTOForAll> getAllMedication(@NotNull @Valid Long prescriptionId) {
-        return null;
+    public ResponseEntity<PrescriptionMedicationDTOForAll> getAllMedication(@NotNull @Valid final Long prescriptionId) {
+
+        log.info("MedicationController.getAllMedication - Start - Input - [{}]", prescriptionId);
+
+        List<Medication> allMedication = service.getAllMedication(prescriptionId);
+
+        ResponseEntity<PrescriptionMedicationDTOForAll> response = ResponseEntity.ok(medicationMapper.entitiesToDtos(allMedication));
+
+        log.debug("MedicationController.getAllMedication - End - Input: {} - Output: {}", prescriptionId, response);
+
+        return response;
     }
 
     @Override
-    public ResponseEntity<PrescriptionMedicationDTOForResponse> getMedication(Long medicationId) {
-        return null;
+    public ResponseEntity<PrescriptionMedicationDTOForResponse> getMedication(final Long medicationId) {
+
+        log.info("MedicationController.getMedication - Start - Input - [{}]", medicationId);
+
+        Medication medication = service.getMedication(medicationId);
+
+        ResponseEntity<PrescriptionMedicationDTOForResponse> response = ResponseEntity.ok(medicationMapper.entityToDto(medication));
+
+        log.debug("MedicationController.getMedication - End - Input: {} - Output: {}", medicationId, response);
+
+        return response;
     }
 
     @Override
-    public ResponseEntity<PrescriptionMedicationDTOForResponse> updateMedication(@Valid PrescriptionMedicationDTOForCreate body, Long medicationId) {
-        return null;
+    public ResponseEntity<PrescriptionMedicationDTOForResponse> updateMedication(@Valid final PrescriptionMedicationDTOForCreate body,
+                                                                                 final Long medicationId) {
+
+        log.info("MedicationController.updateMedication - Start - Input - [{}]", body);
+
+        Medication medication = service.updateMedication(body, medicationId);
+
+        ResponseEntity<PrescriptionMedicationDTOForResponse> response = ResponseEntity.ok(medicationMapper.entityToDto(medication));
+
+        log.debug("MedicationController.updateMedication - End - Input: {} - Output: {}", medicationId, response);
+
+        return response;
     }
 }

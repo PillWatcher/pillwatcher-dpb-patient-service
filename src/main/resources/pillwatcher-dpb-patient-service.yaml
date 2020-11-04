@@ -1840,6 +1840,8 @@ definitions:
         example: 5
         type: number
         format: int32
+      dosageType:
+        $ref: '#/definitions/DosageTypeEnum'
       inclusionDate:
         description: 'Inclusion date of prescription'
         example: '2020-01-21T23:23:23Z'
@@ -1855,8 +1857,11 @@ definitions:
         type: string
       dosage:
         description: 'Medicine dosage'
-        example: '5 mg'
-        type: string
+        example: 5
+        type: number
+        format: int32
+      dosageType:
+        $ref: '#/definitions/DosageTypeEnum'
   SupplyForCreateDTO:
     type: 'object'
     description: 'Structure used to suplly'
