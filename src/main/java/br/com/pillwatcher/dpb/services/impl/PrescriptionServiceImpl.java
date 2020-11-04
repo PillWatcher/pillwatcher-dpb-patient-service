@@ -5,7 +5,6 @@ import br.com.pillwatcher.dpb.constants.ValidationConstraints;
 import br.com.pillwatcher.dpb.entities.NursePatient;
 import br.com.pillwatcher.dpb.entities.Patient;
 import br.com.pillwatcher.dpb.entities.Prescription;
-import br.com.pillwatcher.dpb.exceptions.PatientException;
 import br.com.pillwatcher.dpb.exceptions.PrescriptionException;
 import br.com.pillwatcher.dpb.mappers.PrescriptionMapper;
 import br.com.pillwatcher.dpb.repositories.PrescriptionRepository;
@@ -42,17 +41,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         log.info("PrescriptionServiceImpl.create - Start - Input {}", body);
 
-        final Optional<NursePatient> nursePatientFound = patientService.getNursePatient(cpf, nurseId);
+        final NursePatient nursePatientFound = patientService.getNursePatient(cpf, nurseId);
 
-        if (!nursePatientFound.isPresent()) {
-            log.warn(ValidationConstraints.PATIENT_NOT_FOUND, nurseId);
-            throw new PrescriptionException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
-                    StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", nurseId.toString()));
-        }
-
-        NursePatient nursePatient = nursePatientFound.get();
-
-        Prescription save = prescriptionRepository.save(prescriptionMapper.dtoToEntity(body, nursePatient
+        Prescription save = prescriptionRepository.save(prescriptionMapper.dtoToEntity(body, nursePatientFound
                 .getPatient()
                 .getId()));
 
@@ -81,15 +72,9 @@ public class PrescriptionServiceImpl implements PrescriptionService {
 
         log.info("PrescriptionServiceImpl.getAllPatientPrescription - Start - Input {}", cpf);
 
-        final Optional<Patient> patientByUserDocument = patientService.findPatientByUserDocument(cpf);
+        final Patient patientByUserDocument = patientService.findPatientByUserDocument(cpf);
 
-        if (!patientByUserDocument.isPresent()) {
-            log.warn(ValidationConstraints.PATIENT_NOT_FOUND, cpf);
-            throw new PrescriptionException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
-                    StringUtils.replace(ValidationConstraints.PATIENT_NOT_FOUND, "{}", cpf));
-        }
-
-        Patient patient = patientByUserDocument.get();
+        Patient patient = patientByUserDocument;
         List<Prescription> allByPatientId = prescriptionRepository.findAllByPatientId(patient.getId());
 
         return prescriptionMapper.entityToDtos(allByPatientId);

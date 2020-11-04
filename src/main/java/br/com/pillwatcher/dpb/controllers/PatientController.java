@@ -115,4 +115,19 @@ public class PatientController implements PatientsApi {
 
         return response;
     }
+
+    @Override
+    public ResponseEntity<Void> relationPatientToNurse(final String cpf, final Long nurseId) {
+        log.info("PatientController.relationPatientToNurse - Start - Input - {}, {}", cpf, nurseId);
+
+        service.relationPatientToNurse(cpf, nurseId);
+
+        ResponseEntity<Void> response = ResponseEntity
+                .ok()
+                .build();
+
+        log.debug("PatientController.relationPatientToNurse - End - Input: {}, {} - Output: {}", cpf, nurseId, response);
+
+        return response;
+    }
 }

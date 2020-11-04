@@ -1,5 +1,6 @@
 package br.com.pillwatcher.dpb.services;
 
+import br.com.pillwatcher.dpb.entities.Nurse;
 import br.com.pillwatcher.dpb.entities.NursePatient;
 import br.com.pillwatcher.dpb.entities.Patient;
 import io.swagger.model.PatientDTOForCreate;
@@ -21,7 +22,11 @@ public interface PatientService {
 
     void deletePatient(String document, Long nurseId);
 
-    Optional<NursePatient> getNursePatient(String cpf, Long nurseId);
+    NursePatient getNursePatient(String cpf, Long nurseId);
 
-    Optional<Patient> findPatientByUserDocument(String cpf);
+    Patient findPatientByUserDocument(String cpf);
+
+    void relationPatientToNurse(String cpf, Long nurseId);
+
+    Nurse getNurse(Long nurseId);
 }
