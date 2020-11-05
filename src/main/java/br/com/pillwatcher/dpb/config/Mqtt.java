@@ -10,7 +10,7 @@ import static java.util.Objects.isNull;
 public class Mqtt {
 
     private static final String MQTT_PUBLISHER_ID = "spring-server";
-    private static final String MQTT_SERVER_ADDRESS = "tcp://192.99.25.198:1883"; //TODO fix this.
+    private static final String MQTT_SERVER_ADDRESS = "tcp://192.99.25.198:1883";
 
     private static IMqttClient instance;
 

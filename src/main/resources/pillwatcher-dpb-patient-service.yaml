@@ -1890,13 +1890,13 @@ definitions:
         format: int64
       name:
         description: 'Medicine name'
-        example: 'Novalgina'
         type: string
+        example: 'Novalgina'
       dosage:
         description: 'Medicine dosage'
-        example: 5
         type: number
         format: int32
+        example: 5
       dosageType:
         $ref: '#/definitions/DosageTypeEnum'
       inclusionDate:
@@ -1914,9 +1914,9 @@ definitions:
         type: string
       dosage:
         description: 'Medicine dosage'
-        example: 5
         type: number
         format: int32
+        example: 5
       dosageType:
         $ref: '#/definitions/DosageTypeEnum'
   SupplyForCreateDTO:
