@@ -40,7 +40,7 @@ public class PatientValidator {
                     StringUtils.replace(ValidationConstraints.MISSING_PARAMETERS, "{}", "GetAllPatients"));
         }
 
-        final String nurseId = (String) args[0];
+        final String nurseId =  String.valueOf(args[0]);
         validateNurseId(nurseId);
     }
 
@@ -59,7 +59,7 @@ public class PatientValidator {
                     StringUtils.replace(ValidationConstraints.MISSING_PARAMETERS, "{}", "delete/getPatient"));
         }
 
-        final String nurseId = (String) args[1];
+        final String nurseId = String.valueOf(args[1]);
         validateNurseId(nurseId);
     }
 
@@ -77,7 +77,7 @@ public class PatientValidator {
                     StringUtils.replace(ValidationConstraints.MISSING_PARAMETERS, "{}", "UpdatePatient"));
         }
 
-        final String nurseId = (String) args[2];
+        final String nurseId = String.valueOf(args[2]);
         validateNurseId(nurseId);
     }
 

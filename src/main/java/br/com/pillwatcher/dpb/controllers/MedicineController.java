@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.validation.Valid;
 import java.util.List;
@@ -21,6 +22,7 @@ import static br.com.pillwatcher.dpb.constants.UrlConstants.BASE_URI;
 
 @Slf4j
 @RequiredArgsConstructor
+@RestController
 @Api(tags = {"Medicine"})
 @RequestMapping(BASE_URI)
 public class MedicineController implements MedicinesApi {
