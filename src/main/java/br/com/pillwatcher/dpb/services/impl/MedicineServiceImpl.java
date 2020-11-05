@@ -33,13 +33,16 @@ public class MedicineServiceImpl implements MedicineService {
 
         log.info("MedicineServiceImpl.create - Start - Input {}", medicineDto);
 
-        Optional<Medicine> medicineFound = repository.findByDosageAndAndDosageTypeAndName(Integer.valueOf(medicineDto.getDosage().toString()),
-                medicineDto.getDosageType(), medicineDto.getName());
+        Optional<Medicine> medicineFound = repository.findByDosageAndAndDosageTypeAndName(
+                Integer.valueOf(medicineDto.getDosage().toString()),
+                medicineDto.getDosageType(),
+                medicineDto.getName());
 
         if (medicineFound.isPresent()) {
             log.warn(ValidationConstraints.MEDICINE_ALREADY_EXISTS, medicineDto.getName());
             throw new MedicineException(ErrorCodeEnum.UNEXPECTED_ERROR, ErrorMessages.CONFLICT,
-                    StringUtils.replace(ValidationConstraints.MEDICINE_ALREADY_EXISTS, "{}", medicineDto.getName()));
+                    StringUtils.replace(ValidationConstraints.MEDICINE_ALREADY_EXISTS, "{}",
+                            medicineDto.getName()));
         }
 
         Medicine medicine = mapper.dtoToEntity(medicineDto);

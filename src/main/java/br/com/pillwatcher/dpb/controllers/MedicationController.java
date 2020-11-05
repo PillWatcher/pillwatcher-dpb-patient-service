@@ -1,8 +1,12 @@
 package br.com.pillwatcher.dpb.controllers;
 
+import br.com.pillwatcher.dpb.config.Mqtt;
 import br.com.pillwatcher.dpb.entities.Medication;
+import br.com.pillwatcher.dpb.entities.MqttPublish;
 import br.com.pillwatcher.dpb.mappers.MedicationMapper;
 import br.com.pillwatcher.dpb.services.MedicationService;
+import br.com.pillwatcher.dpb.services.MqttService;
+import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.api.MedicationsApi;
 import io.swagger.model.PrescriptionMedicationDTOForAll;
@@ -10,6 +14,8 @@ import io.swagger.model.PrescriptionMedicationDTOForCreate;
 import io.swagger.model.PrescriptionMedicationDTOForResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.eclipse.paho.client.mqttv3.MqttException;
+import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,9 +34,10 @@ import static br.com.pillwatcher.dpb.constants.UrlConstants.BASE_URI;
 @RequestMapping(BASE_URI)
 public class MedicationController implements MedicationsApi {
 
-    private final MedicationMapper medicationMapper;
-
+    private final MqttService mqttService;
     private final MedicationService service;
+
+    private final MedicationMapper medicationMapper;
 
     @Override
     public ResponseEntity<PrescriptionMedicationDTOForResponse> createMedication(@Valid final PrescriptionMedicationDTOForCreate body,
@@ -78,15 +85,19 @@ public class MedicationController implements MedicationsApi {
     }
 
     @Override
-    public ResponseEntity<PrescriptionMedicationDTOForResponse> getMedication(final Long medicationId) {
+    public ResponseEntity<PrescriptionMedicationDTOForResponse> getMedication(final Long medicationId)
+            throws MqttException {
 
         log.info("MedicationController.getMedication - Start - Input - [{}]", medicationId);
 
         Medication medication = service.getMedication(medicationId);
 
-        ResponseEntity<PrescriptionMedicationDTOForResponse> response = ResponseEntity.ok(medicationMapper.entityToDto(medication));
+        ResponseEntity<PrescriptionMedicationDTOForResponse> response = ResponseEntity.ok(
+                medicationMapper.entityToDto(medication));
 
         log.debug("MedicationController.getMedication - End - Input: {} - Output: {}", medicationId, response);
+
+        setupMqtt(medication, ""); //SHOULD WE USE HERE. DEFINE TOPIC NAME
 
         return response;
     }
@@ -104,5 +115,20 @@ public class MedicationController implements MedicationsApi {
         log.debug("MedicationController.updateMedication - End - Input: {} - Output: {}", medicationId, response);
 
         return response;
+    }
+
+    private void setupMqtt(final Object object, final String topic) throws MqttException {
+
+        MqttPublish mqttPublish = MqttPublish.builder()
+                .message(new Gson().toJson(object))
+                .qos(0)
+                .topic(topic)
+                .retained(true)
+                .build();
+
+        MqttMessage mqttMessage = mqttService.createMqttMessage(mqttPublish);
+
+        Mqtt.getInstance()
+                .publish(mqttPublish.getTopic(), mqttMessage);
     }
 }
