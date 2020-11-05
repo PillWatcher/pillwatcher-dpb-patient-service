@@ -122,4 +122,8 @@ public class PrescriptionServiceImpl implements PrescriptionService {
         return prescriptionMapper.entityToDto(save);
     }
 
+    @Override
+    public List<Prescription> getAllPrescriptionByPatientId(final Long patientId) {
+        return prescriptionRepository.findAllByPatientId(patientId);
+    }
 }

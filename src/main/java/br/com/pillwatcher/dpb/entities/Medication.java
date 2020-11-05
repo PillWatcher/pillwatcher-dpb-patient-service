@@ -7,7 +7,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -52,10 +52,10 @@ public class Medication extends Auditable {
     private Integer availableQuantity;
 
     @Column(name = "START_DATE")
-    private LocalDate startDate;
+    private LocalDateTime startDate;
 
     @Column(name = "EXPIRATION_DATE")
-    private LocalDate expirationDate;
+    private LocalDateTime expirationDate;
 
     @Column(name = "LOCATION")
     private Integer location;

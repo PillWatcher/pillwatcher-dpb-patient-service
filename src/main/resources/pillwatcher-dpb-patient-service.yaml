@@ -416,6 +416,72 @@ paths:
               code: UNEXPECTED_ERROR
               message: "Internal server error"
               details: ["Internal server error"]
+  '/patients/{patientId}/details':
+    get:
+      summary: "Get Patient's Details in Pillwatcher"
+      description: "Get Patient's Details in Pillwatcher"
+      tags:
+        - Patient
+      operationId:  "getPatientDetails"
+      produces:
+        - "application/json"
+      parameters:
+        - name: patientId
+          description: 'Patient Id'
+          in: path
+          type: number
+          format: int64
+          required: true
+      responses:
+        '200':
+          description: Ok
+          schema:
+            $ref: '#/definitions/PatientDetailsDTOForResponse'
+        '400':
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: VALIDATION_ERROR
+              message: "Validation failed"
+              details: ["Bad Request"]
+        '401':
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: UNAUTHORIZED
+              message: "Unauthorized"
+              details: ["Unauthorized"]
+        '403':
+          description: Forbidden
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: FORBIDDEN
+              message: "Forbidden"
+              details: ["Forbidden"]
+        '404':
+          description: Not Found
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: NOT_FOUND
+              message: "Entity not found"
+              details: ["Patient with cpf *** not found"]
+        '500':
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Fault'
+          examples:
+            application/json:
+              code: UNEXPECTED_ERROR
+              message: "Internal server error"
+              details: ["Internal server error"]
   '/prescriptions':
     post:
       summary: "Add a new Patient Prescription to Pillwatcher"
@@ -1560,8 +1626,23 @@ definitions:
         example: '2020-01-21T23:59:39Z'
         type: string
         format: 'date-time'
+  PatientDetailsDTOForResponse:
+    type: 'object'
+    description: 'Structure used to create a Patient on Pillwatcher'
+    properties:
+      id:
+        description: 'Patient id'
+        example: 12345
+        type: number
+        format: int64
+      name:
+        description: 'Patient name'
+        example: 'Logan Warden'
+        type: string
+        minLength: 3
+        maxLength: 120
       prescription:
-        $ref: '#/definitions/PrescriptionDTOForGet'
+        $ref: '#/definitions/PrescriptiontoPatientDTOForGet'
   PatientDTOForGet:
     type: array
     description: 'Structure used to store patients'
@@ -1581,7 +1662,7 @@ definitions:
         description: 'Validity date of prescription'
         example: '2020-01-21'
         type: string
-        format: 'date'
+        format: 'date-time'
   PatientPrescriptionDTOForResponse:
     type: 'object'
     description: 'Prescrition response of patient on Pillwatcher'
@@ -1607,7 +1688,7 @@ definitions:
         description: 'Validity date of prescription'
         example: '2020-01-21'
         type: string
-        format: 'date'
+        format: 'date-time'
       inclusionDate:
         description: 'Inclusion date of prescription'
         example: '2020-01-21T23:23:23Z'
@@ -1618,7 +1699,7 @@ definitions:
         example: '2020-01-21T23:23:23'
         type: string
         format: 'date-time'
-  PrescriptionDTO:
+  PrescriptionToPatientDTO:
     type: 'object'
     description: "Structure used to get Patient's Prescription Info"
     properties:
@@ -1627,22 +1708,6 @@ definitions:
         example: 12345
         type: number
         format: int64
-      imageUrl:
-        description: 'Image of Prescritpion'
-        example: 'https://s3-amazon.com.br/random-url-here-1239105-as1091.jpg'
-        type: string
-        minLength: 15
-        maxLength: 255
-      inclusionDate:
-        description: 'Inclusion date of prescription'
-        example: '2020-01-21T23:23:23Z'
-        type: string
-        format: 'date-time'
-      updateDate:
-        description: 'Update date of prescription'
-        example: '2020-01-21T23:23:23'
-        type: string
-        format: 'date-time'
       validityDate:
         description: 'Validity Date of Prescription'
         example: '2020-01-21T23:23:23'
@@ -1650,11 +1715,11 @@ definitions:
         format: 'date-time'
       medication:
         $ref: '#/definitions/MedicationDTOForGet'
-  PrescriptionDTOForGet:
+  PrescriptiontoPatientDTOForGet:
     type: 'array'
     description: "Structure used to get Patient's Prescription Info"
     items:
-      $ref: '#/definitions/PrescriptionDTO'
+      $ref: '#/definitions/PrescriptionToPatientDTO'
   MedicationDTOForGet:
     type: 'array'
     items:
@@ -1686,19 +1751,11 @@ definitions:
         type: number
         format: int32
         example: 17
-      batch:
-        description: 'Remedy Batch'
-        type: string
-        example: '1230WS0-XA102'
       intervalTime:
         description: 'Remedy Application Inteval Time'
         type: number
         format: int32
         example: 30
-      intervalTimeType:
-        description: 'Remedy Application Inteval Time Type'
-        type: string
-        example: 'min'
       cupTag:
         description: 'Unique tag of cup for medication'
         example: '456055486512SDA'
@@ -1739,12 +1796,12 @@ definitions:
         description: 'Start ate of medication'
         example: '2020-12-12'
         type: string
-        format: 'date'
+        format: 'date-time'
       expirationDate:
         description: 'Expiration of medication'
         example: '2020-12-12'
         type: string
-        format: 'date'
+        format: 'date-time'
       location:
         description: 'Location of medication in PillWatcher'
         example: 12
@@ -1792,12 +1849,12 @@ definitions:
         description: 'Start ate of medication'
         example: '2020-12-12'
         type: string
-        format: 'date'
+        format: 'date-time'
       expirationDate:
         description: 'Expiration of medication'
         example: '2020-12-12'
         type: string
-        format: 'date'
+        format: 'date-time'
       location:
         description: 'Location of medication in PillWatcher'
         example: 12

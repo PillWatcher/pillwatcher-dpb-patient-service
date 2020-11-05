@@ -2,20 +2,19 @@ package br.com.pillwatcher.dpb.services.impl;
 
 import br.com.pillwatcher.dpb.constants.ErrorMessages;
 import br.com.pillwatcher.dpb.constants.ValidationConstraints;
-import br.com.pillwatcher.dpb.entities.Nurse;
-import br.com.pillwatcher.dpb.entities.NursePatient;
-import br.com.pillwatcher.dpb.entities.Patient;
+import br.com.pillwatcher.dpb.entities.*;
 import br.com.pillwatcher.dpb.exceptions.PatientException;
 import br.com.pillwatcher.dpb.exceptions.PrescriptionException;
+import br.com.pillwatcher.dpb.mappers.MedicationMapper;
 import br.com.pillwatcher.dpb.mappers.PatientMapper;
+import br.com.pillwatcher.dpb.mappers.PrescriptionMapper;
 import br.com.pillwatcher.dpb.repositories.NursePatientRepository;
 import br.com.pillwatcher.dpb.repositories.NurseRepository;
 import br.com.pillwatcher.dpb.repositories.PatientRepository;
+import br.com.pillwatcher.dpb.services.MedicationService;
 import br.com.pillwatcher.dpb.services.PatientService;
-import io.swagger.model.ErrorCodeEnum;
-import io.swagger.model.PatientDTOForCreate;
-import io.swagger.model.PatientDTOForResponse;
-import io.swagger.model.PatientDTOForUpdate;
+import br.com.pillwatcher.dpb.services.PrescriptionService;
+import io.swagger.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
@@ -23,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -34,8 +34,11 @@ public class PatientServiceImpl implements PatientService {
     private final NurseRepository nRepository;
     private final PatientRepository repository;
     private final NursePatientRepository nPatientRepository;
-
+    private final PrescriptionService prescriptionService;
+    private final MedicationService medicationService;
     private final PatientMapper mapper;
+    private MedicationMapper medicationMapper;
+    private PrescriptionMapper prescriptionMapper;
 
     @Override
     @Transactional
@@ -185,4 +188,35 @@ public class PatientServiceImpl implements PatientService {
         return patientByUserDocument.get();
     }
 
+    @Override
+    public PatientDetailsDTOForResponse getPatientDetails(final Long patientId) {
+
+        log.info("PatientServiceImpl.getPatientDetails - Start - Input {}", patientId);
+
+        Optional<Patient> optionalPatient = repository.findById(patientId);
+
+        if (!optionalPatient.isPresent()) {
+            log.warn(ValidationConstraints.PATIENT_BY_ID_NOT_FOUND, patientId);
+            throw new PrescriptionException(ErrorCodeEnum.NOT_FOUND, ErrorMessages.NOT_FOUND,
+                    StringUtils.replace(ValidationConstraints.PATIENT_BY_ID_NOT_FOUND, "{}", patientId.toString()));
+        }
+
+        final Patient patient = optionalPatient.get();
+
+        final List<Prescription> allPrescriptionByPatientId = prescriptionService.getAllPrescriptionByPatientId(patientId);
+
+        List<PrescriptionToPatientDTO> prescriptionToPatientDTOS = new ArrayList<>();
+        allPrescriptionByPatientId.forEach(prescription -> {
+            final List<Medication> allMedication = medicationService.getAllMedication(prescription.getId());
+            final List<MedicationDTO> medicationDTOS = medicationMapper.entitiesToMedicationDetail(allMedication);
+
+            PrescriptionToPatientDTO prescriptionToPatientDTO = prescriptionMapper.entityToPrescriptionDetail(prescription,
+                    medicationDTOS);
+
+            prescriptionToPatientDTOS.add(prescriptionToPatientDTO);
+        });
+
+
+        return mapper.toPatientDetails(patient, prescriptionToPatientDTOS);
+    }
 }

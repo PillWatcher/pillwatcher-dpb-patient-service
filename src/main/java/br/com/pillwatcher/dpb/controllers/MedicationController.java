@@ -85,8 +85,7 @@ public class MedicationController implements MedicationsApi {
     }
 
     @Override
-    public ResponseEntity<PrescriptionMedicationDTOForResponse> getMedication(final Long medicationId)
-            throws MqttException {
+    public ResponseEntity<PrescriptionMedicationDTOForResponse> getMedication(final Long medicationId) {
 
         log.info("MedicationController.getMedication - Start - Input - [{}]", medicationId);
 
@@ -96,8 +95,6 @@ public class MedicationController implements MedicationsApi {
                 medicationMapper.entityToDto(medication));
 
         log.debug("MedicationController.getMedication - End - Input: {} - Output: {}", medicationId, response);
-
-        setupMqtt(medication, ""); //SHOULD WE USE HERE. DEFINE TOPIC NAME
 
         return response;
     }

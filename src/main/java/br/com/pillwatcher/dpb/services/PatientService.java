@@ -6,9 +6,9 @@ import br.com.pillwatcher.dpb.entities.Patient;
 import io.swagger.model.PatientDTOForCreate;
 import io.swagger.model.PatientDTOForResponse;
 import io.swagger.model.PatientDTOForUpdate;
+import io.swagger.model.PatientDetailsDTOForResponse;
 
 import java.util.List;
-import java.util.Optional;
 
 public interface PatientService {
 
@@ -29,4 +29,6 @@ public interface PatientService {
     void relationPatientToNurse(String cpf, Long nurseId);
 
     Nurse getNurse(Long nurseId);
+
+    PatientDetailsDTOForResponse getPatientDetails(Long patientId);
 }

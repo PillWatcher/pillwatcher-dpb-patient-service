@@ -1,11 +1,7 @@
 package br.com.pillwatcher.dpb.mappers;
 
 import br.com.pillwatcher.dpb.entities.Patient;
-import io.swagger.model.PatientDTOForCreate;
-import io.swagger.model.PatientDTOForGet;
-
-import io.swagger.model.PatientDTOForResponse;
-import io.swagger.model.PatientDTOForUpdate;
+import io.swagger.model.*;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -40,5 +36,11 @@ public interface PatientMapper {
 
     PatientDTOForGet toPatientDtoForGet(List<PatientDTOForResponse> patients);
 
-
+    @Mappings({
+            @Mapping(target = "id", source = "patient.id"),
+            @Mapping(target = "name", source = "patient.user.name"),
+            @Mapping(target = "prescription", source = "prescriptionToPatientDTOS")
+    })
+    PatientDetailsDTOForResponse toPatientDetails(Patient patient,
+                                                  List<PrescriptionToPatientDTO> prescriptionToPatientDTOS);
 }

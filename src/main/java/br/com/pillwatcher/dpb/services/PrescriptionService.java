@@ -1,8 +1,11 @@
 package br.com.pillwatcher.dpb.services;
 
+import br.com.pillwatcher.dpb.entities.Prescription;
 import io.swagger.model.PatientPrescriptionDTOForCreate;
 import io.swagger.model.PatientPrescriptionDTOForGetAll;
 import io.swagger.model.PatientPrescriptionDTOForResponse;
+
+import java.util.List;
 
 public interface PrescriptionService {
 
@@ -16,4 +19,5 @@ public interface PrescriptionService {
 
     PatientPrescriptionDTOForResponse updatePatientPrescription(PatientPrescriptionDTOForCreate body, Long prescriptionId);
 
+    List<Prescription> getAllPrescriptionByPatientId(Long patientId);
 }

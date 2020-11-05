@@ -1,11 +1,10 @@
 package br.com.pillwatcher.dpb.mappers;
 
 import br.com.pillwatcher.dpb.entities.Medication;
-import io.swagger.model.PrescriptionMedicationDTOForAll;
-import io.swagger.model.PrescriptionMedicationDTOForCreate;
-import io.swagger.model.PrescriptionMedicationDTOForResponse;
+import io.swagger.model.*;
 import org.mapstruct.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
@@ -38,4 +37,19 @@ public interface MedicationMapper {
 
     @IterableMapping(qualifiedByName = "entityToDto")
     PrescriptionMedicationDTOForAll entitiesToDtos(final List<Medication> medication);
+
+    @Mappings({
+            @Mapping(target = "medicationId", source = "id"),
+            @Mapping(target = "name", source = "medicine.name"),
+            @Mapping(target = "dosage", source = "medicine.dosage"),
+            @Mapping(target = "dosageType", source = "medicine.dosageType"),
+            @Mapping(target = "location", source = "location"),
+            @Mapping(target = "intervalTime", source = "intervalTime"),
+            @Mapping(target = "cupTag", source = "cup.tag"),
+            @Mapping(target = "availableQuantity", source = "availableQuantity")
+    })
+    MedicationDTO entitiesToMedicationDetail(final Medication medication);
+
+    @IterableMapping(qualifiedByName = "entityToMedicationDetail")
+    List<MedicationDTO> entitiesToMedicationDetail(final List<Medication> medications);
 }

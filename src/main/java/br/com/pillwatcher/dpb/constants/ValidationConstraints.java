@@ -13,6 +13,8 @@ public final class ValidationConstraints {
     public static final String NURSE_NOT_FOUND = "Nurse with id {} not found";
 
     public static final String PATIENT_NOT_FOUND = "Patient with CPF {} not found";
+    public static final String PATIENT_BY_ID_NOT_FOUND = "Patient with ID {} not found";
+
     public static final String PATIENT_ALREADY_EXISTS = "Patient with CPF {} already exists";
 
     public static final String MISSING_PARAMETERS = "Method {} is missing parameters";

@@ -1,9 +1,7 @@
 package br.com.pillwatcher.dpb.mappers;
 
 import br.com.pillwatcher.dpb.entities.Prescription;
-import io.swagger.model.PatientPrescriptionDTOForCreate;
-import io.swagger.model.PatientPrescriptionDTOForGetAll;
-import io.swagger.model.PatientPrescriptionDTOForResponse;
+import io.swagger.model.*;
 import org.mapstruct.*;
 
 import java.util.List;
@@ -25,4 +23,12 @@ public interface PrescriptionMapper {
     @IterableMapping(qualifiedByName = "entityToDto")
     PatientPrescriptionDTOForGetAll entityToDtos(final List<Prescription> prescription);
 
+
+    @Mappings({
+            @Mapping(target = "prescriptionId", source = "prescription.id"),
+            @Mapping(target = "validityDate", source = "prescription.validityDate"),
+            @Mapping(target = "medication", source = "medicationDTOS")
+    })
+    PrescriptionToPatientDTO entityToPrescriptionDetail(final Prescription prescription,
+                                                        final List<MedicationDTO> medicationDTOS);
 }

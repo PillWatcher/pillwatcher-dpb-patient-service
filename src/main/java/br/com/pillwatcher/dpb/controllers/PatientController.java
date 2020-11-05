@@ -5,10 +5,7 @@ import br.com.pillwatcher.dpb.mappers.PatientMapper;
 import br.com.pillwatcher.dpb.services.PatientService;
 import io.swagger.annotations.Api;
 import io.swagger.api.PatientsApi;
-import io.swagger.model.PatientDTOForCreate;
-import io.swagger.model.PatientDTOForGet;
-import io.swagger.model.PatientDTOForResponse;
-import io.swagger.model.PatientDTOForUpdate;
+import io.swagger.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -127,6 +124,21 @@ public class PatientController implements PatientsApi {
                 .build();
 
         log.debug("PatientController.relationPatientToNurse - End - Input: {}, {} - Output: {}", cpf, nurseId, response);
+
+        return response;
+    }
+
+    @Override
+    public ResponseEntity<PatientDetailsDTOForResponse> getPatientDetails(final Long patientId) {
+
+        log.info("PatientController.getPatientDetails - Start - Input - {}", patientId);
+
+        PatientDetailsDTOForResponse patientDetails = service.getPatientDetails(patientId);
+
+        ResponseEntity<PatientDetailsDTOForResponse> response = ResponseEntity
+                .ok(patientDetails);
+
+        log.debug("PatientController.relationPatientToNurse - End - Input: {} - Output: {}", patientId, response);
 
         return response;
     }
