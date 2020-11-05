@@ -51,7 +51,6 @@ public class MedicineServiceImpl implements MedicineService {
     }
 
     @Override
-    @Transactional
     public Medicine getMedication(final Long medicineId) {
 
         log.info("MedicineServiceImpl.getMedication - Start - Input {}", medicineId);
