@@ -1,7 +1,10 @@
 package br.com.pillwatcher.dpb.controllers;
 
+import br.com.pillwatcher.dpb.constants.ErrorMessages;
 import br.com.pillwatcher.dpb.entities.Patient;
+import br.com.pillwatcher.dpb.exceptions.MedicationException;
 import br.com.pillwatcher.dpb.mappers.PatientMapper;
+import br.com.pillwatcher.dpb.services.MqttService;
 import br.com.pillwatcher.dpb.services.PatientService;
 import io.swagger.annotations.Api;
 import io.swagger.api.PatientsApi;
@@ -24,8 +27,10 @@ import static br.com.pillwatcher.dpb.constants.UrlConstants.BASE_URI;
 @RequestMapping(BASE_URI)
 public class PatientController implements PatientsApi {
 
-    private final PatientMapper mapper;
+    private final MqttService mqttService;
     private final PatientService service;
+
+    private final PatientMapper mapper;
 
     @Override
     public ResponseEntity<PatientDTOForResponse> createPatient(@Valid @RequestBody final PatientDTOForCreate dtoForCreate,
@@ -40,6 +45,9 @@ public class PatientController implements PatientsApi {
                 .body(mapper.toPatientForResponse(patient));
 
         log.debug("PatientController.createPatient - End - Input: {} - Output: {}", dtoForCreate, response);
+
+        mqttService.setupMqtt(patient, "create-patient",
+                new MedicationException(ErrorCodeEnum.INVALID_PARAMETER, ErrorMessages.BAD_REQUEST, ""));
 
         return response;
     }
