@@ -42,7 +42,7 @@ public class MedicationScheduledServiceImpl implements MedicationScheduledServic
 
         final List<MqttMedication> medicationsToApplyFirst = medicationRepository
                 .findMedicationsToApplyFirst(now.withNano(0).withSecond(0),
-                now.plusMinutes(1).withNano(0).withSecond(0));
+                        now.plusMinutes(1).withNano(0).withSecond(0));
 
         final List<MqttMedication> medicationsToApply = medicationRepository
                 .findMedicationsToApply(now.withNano(0).withSecond(0),
@@ -60,6 +60,6 @@ public class MedicationScheduledServiceImpl implements MedicationScheduledServic
             final LocalDateTime nextMedication = now.plusHours(mqttMedication.getIntervalTime());
             appliedMedicationRepository.save(medicationMapper.mqttToMedication(mqttMedication, now, nextMedication));
         });
-
     }
+
 }
