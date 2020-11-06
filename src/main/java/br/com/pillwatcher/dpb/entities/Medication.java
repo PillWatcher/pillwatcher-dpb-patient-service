@@ -37,10 +37,10 @@ public class Medication extends Auditable {
     private Cup cup;
 
     @Column(name = "QUANTITY")
-    private Integer quantity;
+    private Long quantity;
 
     @Column(name = "INTERVAL_TIME")
-    private Integer intervalTime;
+    private Long intervalTime;
 
     @Column(name = "BATCH")
     private String batch;
@@ -49,7 +49,7 @@ public class Medication extends Auditable {
     private String observation;
 
     @Column(name = "AVAILABLE_QUANTITY")
-    private Integer availableQuantity;
+    private Long availableQuantity;
 
     @Column(name = "START_DATE")
     private LocalDateTime startDate;
@@ -58,6 +58,6 @@ public class Medication extends Auditable {
     private LocalDateTime expirationDate;
 
     @Column(name = "LOCATION")
-    private Integer location;
+    private Long location;
 
 }

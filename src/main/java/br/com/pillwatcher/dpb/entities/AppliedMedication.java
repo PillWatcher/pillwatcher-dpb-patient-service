@@ -24,11 +24,11 @@ public class AppliedMedication {
     @SequenceGenerator(sequenceName = "SEQ_APPLIED_MEDICATION", allocationSize = 1, name = "SEQ_APPLIED_MEDICATION")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_NURSE")
     private Nurse nurse;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_MEDICATION")
     private Medication medication;
 
@@ -37,5 +37,10 @@ public class AppliedMedication {
 
     @Column(name = "NEXT_MEDICATION_DATE")
     private LocalDateTime nextMedicationDate;
+
+    @PrePersist
+    private void prePersist() {
+        medicationDate = LocalDateTime.now();
+    }
 
 }

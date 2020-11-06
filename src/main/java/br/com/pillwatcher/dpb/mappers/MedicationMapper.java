@@ -1,10 +1,15 @@
 package br.com.pillwatcher.dpb.mappers;
 
+import br.com.pillwatcher.dpb.entities.AppliedMedication;
 import br.com.pillwatcher.dpb.entities.Medication;
-import io.swagger.model.*;
+import br.com.pillwatcher.dpb.entities.MqttMedication;
+import io.swagger.model.MedicationDTO;
+import io.swagger.model.PrescriptionMedicationDTOForAll;
+import io.swagger.model.PrescriptionMedicationDTOForCreate;
+import io.swagger.model.PrescriptionMedicationDTOForResponse;
 import org.mapstruct.*;
 
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Mapper(componentModel = "spring", nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
@@ -52,4 +57,14 @@ public interface MedicationMapper {
 
     @IterableMapping(qualifiedByName = "entityToMedicationDetail")
     List<MedicationDTO> entitiesToMedicationDetail(final List<Medication> medications);
+
+    @Mappings({
+            @Mapping(target = "nurse.id", source = "mqttMedication.nurseId"),
+            @Mapping(target = "medication.id", source = "mqttMedication.medicationId"),
+            @Mapping(target = "nextMedicationDate", source = "nextMedicationDate"),
+            @Mapping(target = "medicationDate", source = "medicationDate")
+    })
+    AppliedMedication mqttToMedication(final MqttMedication mqttMedication,
+                                       final LocalDateTime medicationDate,
+                                       final LocalDateTime nextMedicationDate);
 }
