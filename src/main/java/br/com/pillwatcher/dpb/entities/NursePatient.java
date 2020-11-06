@@ -10,7 +10,8 @@ import javax.persistence.*;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "NURSE_PATIENT")
+@Entity
+@Table(name = "NURSE_PATIENT")
 @EntityListeners(AuditingEntityListener.class)
 public class NursePatient {
 
@@ -20,11 +21,11 @@ public class NursePatient {
     @SequenceGenerator(sequenceName = "SEQ_NURSE_PAT", allocationSize = 1, name = "SEQ_NURSE_PAT")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_NURSE")
     private Nurse nurse;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_PATIENT")
     private Patient patient;
 

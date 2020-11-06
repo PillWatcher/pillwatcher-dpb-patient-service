@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "PATIENT")
+@Table(name = "PATIENT")
+@Entity
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Patient extends Auditable {
@@ -22,10 +23,6 @@ public class Patient extends Auditable {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SEQ_PATIENT")
     @SequenceGenerator(sequenceName = "SEQ_PATIENT", allocationSize = 1, name = "SEQ_PATIENT")
     private Long id;
-
-    @JoinColumn(name = "ID_NURSE")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private Nurse nurse;
 
     @JoinColumn(name = "ID_USER")
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)

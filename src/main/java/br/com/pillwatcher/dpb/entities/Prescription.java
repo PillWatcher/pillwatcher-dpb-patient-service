@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "PRESCRIPTION")
+@Entity
+@Table(name = "PRESCRIPTION")
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Prescription extends Auditable {
@@ -24,12 +25,11 @@ public class Prescription extends Auditable {
     private Long id;
 
     @JoinColumn(name = "ID_PATIENT")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, orphanRemoval = true, fetch = FetchType.EAGER)
     private Patient patient;
 
-    @JoinColumn(name = "ID_USER")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private User user;
+    @Column(name = "IMAGE_URL")
+    private String imageUrl;
 
     @Column(name = "VALIDITY_DATE")
     private LocalDateTime validityDate;

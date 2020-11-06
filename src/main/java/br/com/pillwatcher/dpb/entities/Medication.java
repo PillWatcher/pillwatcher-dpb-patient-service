@@ -12,7 +12,8 @@ import java.time.LocalDateTime;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @NoArgsConstructor
-@Entity(name = "MEDICATION")
+@Entity
+@Table(name = "MEDICATION", uniqueConstraints = @UniqueConstraint(columnNames = {"ID_PRESCRIPTION", "ID_MEDICINE"}))
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
 public class Medication extends Auditable {
@@ -24,12 +25,16 @@ public class Medication extends Auditable {
     private Long id;
 
     @JoinColumn(name = "ID_PRESCRIPTION")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     private Prescription prescription;
 
     @JoinColumn(name = "ID_MEDICINE")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     private Medicine medicine;
+
+    @JoinColumn(name = "ID_CUP")
+    @OneToOne(cascade = CascadeType.DETACH, orphanRemoval = true, fetch = FetchType.EAGER)
+    private Cup cup;
 
     @Column(name = "QUANTITY")
     private Integer quantity;
@@ -44,7 +49,7 @@ public class Medication extends Auditable {
     private String observation;
 
     @Column(name = "AVAILABLE_QUANTITY")
-    private Integer quantityAvailable;
+    private Integer availableQuantity;
 
     @Column(name = "START_DATE")
     private LocalDateTime startDate;

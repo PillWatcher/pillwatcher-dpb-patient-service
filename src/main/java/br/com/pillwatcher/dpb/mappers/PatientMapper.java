@@ -1,15 +1,8 @@
 package br.com.pillwatcher.dpb.mappers;
 
 import br.com.pillwatcher.dpb.entities.Patient;
-import io.swagger.model.PatientDTOForCreate;
-import io.swagger.model.PatientDTOForGet;
-
-import io.swagger.model.PatientDTOForResponse;
-import io.swagger.model.PatientDTOForUpdate;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.Mappings;
-import org.mapstruct.NullValueCheckStrategy;
+import io.swagger.model.*;
+import org.mapstruct.*;
 
 import java.util.List;
 
@@ -38,7 +31,16 @@ public interface PatientMapper {
     })
     PatientDTOForResponse toPatientForResponse(Patient patient);
 
+    @IterableMapping(qualifiedByName = "toPatientForResponse")
+    List<PatientDTOForResponse> toPatientForResponse(List<Patient> patient);
+
     PatientDTOForGet toPatientDtoForGet(List<PatientDTOForResponse> patients);
 
-
+    @Mappings({
+            @Mapping(target = "id", source = "patient.id"),
+            @Mapping(target = "name", source = "patient.user.name"),
+            @Mapping(target = "prescription", source = "prescriptionToPatientDTOS")
+    })
+    PatientDetailsDTOForResponse toPatientDetails(Patient patient,
+                                                  List<PrescriptionToPatientDTO> prescriptionToPatientDTOS);
 }
