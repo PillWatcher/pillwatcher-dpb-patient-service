@@ -25,7 +25,7 @@ public class Prescription extends Auditable {
     private Long id;
 
     @JoinColumn(name = "ID_PATIENT")
-    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, orphanRemoval = true, fetch = FetchType.EAGER)
     private Patient patient;
 
     @Column(name = "IMAGE_URL")

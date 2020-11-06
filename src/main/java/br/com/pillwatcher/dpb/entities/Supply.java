@@ -24,11 +24,11 @@ public class Supply extends Auditable{
     @SequenceGenerator(sequenceName = "SEQ_SUPPLY", allocationSize = 1, name = "SEQ_SUPPLY")
     private Long id;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_NURSE")
     private Nurse nurse;
 
-    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     @JoinColumn(name = "ID_MEDICATION")
     private Medication medication;
 
