@@ -29,9 +29,7 @@ import java.util.Optional;
 public class PrescriptionServiceImpl implements PrescriptionService {
 
     private final PrescriptionRepository prescriptionRepository;
-
     private final PatientService patientService;
-
     private final PrescriptionMapper prescriptionMapper;
 
     @Override

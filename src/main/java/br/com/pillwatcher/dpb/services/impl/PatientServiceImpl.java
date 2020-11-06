@@ -11,6 +11,7 @@ import br.com.pillwatcher.dpb.mappers.PrescriptionMapper;
 import br.com.pillwatcher.dpb.repositories.NursePatientRepository;
 import br.com.pillwatcher.dpb.repositories.NurseRepository;
 import br.com.pillwatcher.dpb.repositories.PatientRepository;
+import br.com.pillwatcher.dpb.repositories.PrescriptionRepository;
 import br.com.pillwatcher.dpb.services.MedicationService;
 import br.com.pillwatcher.dpb.services.PatientService;
 import br.com.pillwatcher.dpb.services.PrescriptionService;
@@ -34,7 +35,7 @@ public class PatientServiceImpl implements PatientService {
     private final NurseRepository nRepository;
     private final PatientRepository repository;
     private final NursePatientRepository nPatientRepository;
-    private final PrescriptionService prescriptionService;
+    private final PrescriptionRepository prescriptionRepository;
     private final MedicationService medicationService;
     private final PatientMapper mapper;
     private MedicationMapper medicationMapper;
@@ -203,7 +204,7 @@ public class PatientServiceImpl implements PatientService {
 
         final Patient patient = optionalPatient.get();
 
-        final List<Prescription> allPrescriptionByPatientId = prescriptionService.getAllPrescriptionByPatientId(patientId);
+        final List<Prescription> allPrescriptionByPatientId = prescriptionRepository.findAllByPatientId(patientId);
 
         List<PrescriptionToPatientDTO> prescriptionToPatientDTOS = new ArrayList<>();
         allPrescriptionByPatientId.forEach(prescription -> {
