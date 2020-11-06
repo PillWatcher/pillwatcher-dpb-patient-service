@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 @Table(name = "SUPPLY")
 @DynamicUpdate
 @EntityListeners(AuditingEntityListener.class)
-public class Supply extends Auditable{
+public class Supply extends Auditable {
 
     @Id
     @Column(name = "ID_SUPPLY")
@@ -43,6 +43,6 @@ public class Supply extends Auditable{
 
     @PrePersist
     private void prePersist() {
-        this.success = Boolean.FALSE;
+        this.success = Boolean.TRUE;
     }
 }
