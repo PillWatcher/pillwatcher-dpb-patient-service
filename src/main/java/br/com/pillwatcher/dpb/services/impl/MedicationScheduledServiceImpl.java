@@ -33,7 +33,7 @@ public class MedicationScheduledServiceImpl implements MedicationScheduledServic
     private final AppliedMedicationRepository appliedMedicationRepository;
 
     @Override
-    @Scheduled(cron = "0 * 0 ? * * *")
+    @Scheduled(cron = "0 * * * * *")
     public void checkMedication() {
 
         LocalDateTime now = LocalDateTime.now();
