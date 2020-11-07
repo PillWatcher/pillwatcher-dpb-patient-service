@@ -60,4 +60,9 @@ public class Medication extends Auditable {
     @Column(name = "LOCATION")
     private Long location;
 
+    @PrePersist
+    public void prePersist() {
+        this.availableQuantity = 0L;
+    }
+
 }
