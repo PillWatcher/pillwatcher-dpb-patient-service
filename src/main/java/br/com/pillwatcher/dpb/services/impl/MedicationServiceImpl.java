@@ -57,9 +57,11 @@ public class MedicationServiceImpl implements MedicationService {
 
         Cup cupByTag = cupService.findCupByTag(body.getCupTag());
 
-        Medication medication = mapper.dtoToEntity(body, medicine.getId(), cupByTag.getId());
+        Medication medication = mapper.dtoToEntity(body, optionalPrescription.get().getId(),
+                cupByTag.getId(), medicine.getId());
 
-        return repository.save(medication);
+        Medication save = repository.save(medication);
+        return repository.findById(save.getId()).get();
     }
 
     @Override
