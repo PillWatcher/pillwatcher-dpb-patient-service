@@ -10,7 +10,7 @@ public class MqttMedication {
     private Long medicationId;
     private Long nurseId;
     private Long cupId;
-    private Long location;
-    private Long intervalTime;
+    private Integer location;
+    private Integer intervalTime;
 
 }

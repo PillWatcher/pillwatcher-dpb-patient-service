@@ -1,15 +1,11 @@
 package br.com.pillwatcher.dpb.controllers;
 
-import br.com.pillwatcher.dpb.config.Mqtt;
 import br.com.pillwatcher.dpb.constants.ErrorMessages;
 import br.com.pillwatcher.dpb.entities.Medication;
-import br.com.pillwatcher.dpb.entities.MqttPublish;
-import br.com.pillwatcher.dpb.exceptions.BaseException;
 import br.com.pillwatcher.dpb.exceptions.MedicationException;
 import br.com.pillwatcher.dpb.mappers.MedicationMapper;
 import br.com.pillwatcher.dpb.services.MedicationService;
 import br.com.pillwatcher.dpb.services.MqttService;
-import com.google.gson.Gson;
 import io.swagger.annotations.Api;
 import io.swagger.api.MedicationsApi;
 import io.swagger.model.ErrorCodeEnum;
@@ -18,12 +14,8 @@ import io.swagger.model.PrescriptionMedicationDTOForCreate;
 import io.swagger.model.PrescriptionMedicationDTOForResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.eclipse.paho.client.mqttv3.MqttException;
-import org.eclipse.paho.client.mqttv3.MqttMessage;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 

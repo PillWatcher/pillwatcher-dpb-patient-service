@@ -16,7 +16,7 @@ import java.util.List;
 public interface MedicationMapper {
 
     @Mappings({
-            @Mapping(target = "medicine.id", source = "prescriptionMedicationDTOForCreate.medicineId"),
+            @Mapping(target = "medicine.id", source = "medicineId"),
             @Mapping(target = "prescription.id", source = "prescriptionId"),
             @Mapping(target = "intervalTime", source = "prescriptionMedicationDTOForCreate.interval"),
             @Mapping(target = "cup.id", source = "cupId"),
@@ -24,7 +24,7 @@ public interface MedicationMapper {
             @Mapping(target = "location", source = "prescriptionMedicationDTOForCreate.location")
     })
     Medication dtoToEntity(final PrescriptionMedicationDTOForCreate prescriptionMedicationDTOForCreate,
-                           final Long prescriptionId, final Long cupId);
+                           final Long prescriptionId, final Long cupId, final Long medicineId);
 
     @Mappings({
             @Mapping(target = "medicine.id", source = "medicine.id"),

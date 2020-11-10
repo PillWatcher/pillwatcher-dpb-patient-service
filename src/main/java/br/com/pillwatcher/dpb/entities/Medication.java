@@ -33,14 +33,14 @@ public class Medication extends Auditable {
     private Medicine medicine;
 
     @JoinColumn(name = "ID_CUP")
-    @OneToOne(cascade = CascadeType.DETACH, orphanRemoval = true, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
     private Cup cup;
 
     @Column(name = "QUANTITY")
-    private Long quantity;
+    private Integer quantity;
 
     @Column(name = "INTERVAL_TIME")
-    private Long intervalTime;
+    private Integer intervalTime;
 
     @Column(name = "BATCH")
     private String batch;
@@ -49,7 +49,7 @@ public class Medication extends Auditable {
     private String observation;
 
     @Column(name = "AVAILABLE_QUANTITY")
-    private Long availableQuantity;
+    private Integer availableQuantity;
 
     @Column(name = "START_DATE")
     private LocalDateTime startDate;
@@ -58,6 +58,11 @@ public class Medication extends Auditable {
     private LocalDateTime expirationDate;
 
     @Column(name = "LOCATION")
-    private Long location;
+    private Integer location;
+
+    @PrePersist
+    public void prePersist() {
+        this.availableQuantity = 0;
+    }
 
 }

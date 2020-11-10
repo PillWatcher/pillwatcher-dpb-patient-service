@@ -14,7 +14,6 @@ import br.com.pillwatcher.dpb.repositories.PatientRepository;
 import br.com.pillwatcher.dpb.repositories.PrescriptionRepository;
 import br.com.pillwatcher.dpb.services.MedicationService;
 import br.com.pillwatcher.dpb.services.PatientService;
-import br.com.pillwatcher.dpb.services.PrescriptionService;
 import io.swagger.model.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -58,13 +57,13 @@ public class PatientServiceImpl implements PatientService {
         final Nurse nurse = getNurse(nurseId);
 
         NursePatient nursePatient = new NursePatient();
-        Patient patient = mapper.toPatientForCreateEntity(patientDto);
+        Patient patient = repository.save(mapper.toPatientForCreateEntity(patientDto));
 
         nursePatient.setNurse(nurse);
         nursePatient.setPatient(patient);
         nPatientRepository.save(nursePatient);
 
-        return repository.save(patient);
+        return patient;
     }
 
     @Override
