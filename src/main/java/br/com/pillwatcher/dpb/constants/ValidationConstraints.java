@@ -12,6 +12,8 @@ public final class ValidationConstraints {
     public static final String NAME_SIZE_MUST_BE_BETWEEN = "Name size must be between {min} and {max} characters long";
     public static final String NURSE_NOT_FOUND = "Nurse with id {} not found";
 
+    public static final String DUPLICATE_PATIENT = "Nurse with document {} already linked";
+
     public static final String PATIENT_NOT_FOUND = "Patient with CPF {} not found";
     public static final String PATIENT_BY_ID_NOT_FOUND = "Patient with ID {} not found";
 
