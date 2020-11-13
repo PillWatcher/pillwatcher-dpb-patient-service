@@ -90,15 +90,15 @@ public class PatientController implements PatientsApi {
     @Override
     public ResponseEntity<PatientDTOForGet> getAllPatients(final @RequestParam("nurseId") Long nurseId) {
 
-        log.info("PatientController.deletePatient - Start - Input - [{}]", "");
-        log.debug("PatientController.deletePatient - Start - Input - Order: {} ", "");
+        log.info("PatientController.getAllPatients - Start - Input - [{}]", "");
+        log.debug("PatientController.getAllPatients - Start - Input - Order: {} ", "");
 
         List<PatientDTOForResponse> patientList = service.findPatients(nurseId);
 
         ResponseEntity<PatientDTOForGet> response = ResponseEntity.ok(
                 mapper.toPatientDtoForGet(patientList));
 
-        log.debug("PatientController.deletePatient - End - Input: {} - Output: {}", response, patientList);
+        log.debug("PatientController.getAllPatients - End - Input: {} - Output: {}", response, patientList);
 
         return response;
     }

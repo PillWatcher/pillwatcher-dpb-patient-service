@@ -48,8 +48,7 @@ public class PatientValidator {
      * Validates if the param is a valid nurse id
      * @param joinPoint
      */
-    @Before("execution(* br.com.pillwatcher.dpb.controllers.PatientController.deletePatient(..)) || "
-            + "execution(* br.com.pillwatcher.dpb.controllers.PatientController.getPatient(..)) ")
+    @Before("execution(* br.com.pillwatcher.dpb.controllers.PatientController.getPatient(..)) ")
     public void validateNurseIdAsSecondArg(final JoinPoint joinPoint) {
 
         Object[] args = joinPoint.getArgs();
@@ -67,7 +66,8 @@ public class PatientValidator {
      * Validates if the param is a valid nurse id
      * @param joinPoint
      */
-    @Before("execution(* br.com.pillwatcher.dpb.controllers.PatientController.updatePatient(..))")
+    @Before("execution(* br.com.pillwatcher.dpb.controllers.PatientController.updatePatient(..)) ||"
+            + "execution(* br.com.pillwatcher.dpb.controllers.PatientController.deletePatient(..))")
     public void validateNurseIdAsThirdArg(final JoinPoint joinPoint) {
 
         Object[] args = joinPoint.getArgs();
@@ -77,7 +77,7 @@ public class PatientValidator {
                     StringUtils.replace(ValidationConstraints.MISSING_PARAMETERS, "{}", "UpdatePatient"));
         }
 
-        final String nurseId = String.valueOf(args[2]);
+        final String nurseId = String.valueOf(args[1]);
         validateNurseId(nurseId);
     }
 
