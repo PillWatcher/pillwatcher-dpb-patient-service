@@ -1985,6 +1985,7 @@ definitions:
       - VALIDATION_ERROR
       - UNAUTHORIZED
       - NOT_FOUND
+      - DUPLICATE_PATIENT
   Fault:
     title: Fault
     type: object
